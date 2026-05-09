@@ -2,11 +2,16 @@
   "id": "cyberpunk-red-vehicles",
   "title": "Cyberpunk RED Vehicles",
   "description": "Adds vehicles as actors to the Cyberpunk RED Core system. Place vehicles on maps, track SDP via token bars, and manage vehicle inventory.",
-  "version": "1.0.0",
-  "manifest": "",
+  "version": "#{VERSION}#",
+  "url": "#{URL}#",
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#",
+  "license": "LICENSE",
+  "readme": "README.md",
   "authors": [
     {
-      "name": "sein.adamczyk"
+      "name": "sudo-sein",
+      "url": "https://github.com/sudo-sein"
     }
   ],
   "compatibility": {
