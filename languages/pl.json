@@ -1,0 +1,37 @@
+{
+  "TYPES.Actor.cyberpunk-red-vehicles.vehicle": "Pojazd",
+  "CPRVEHICLES.SheetLabel": "Karta pojazdu",
+  "CPRVEHICLES.ActorType": "Pojazd",
+
+  "CPRVEHICLES.Fields.Name": "Nazwa pojazdu",
+  "CPRVEHICLES.Fields.SP": "SP",
+  "CPRVEHICLES.Fields.SDP": "SDP",
+  "CPRVEHICLES.Fields.SDPLong": "Punkty wytrzymałości strukturalnej",
+  "CPRVEHICLES.Fields.Seats": "Miejsca",
+  "CPRVEHICLES.Fields.SpeedCombat": "Prędkość bojowa",
+  "CPRVEHICLES.Fields.SpeedNarrative": "Prędkość",
+  "CPRVEHICLES.Fields.VehicleType": "Typ",
+  "CPRVEHICLES.Fields.Notes": "Notatki",
+  "CPRVEHICLES.Fields.Items": "Ulepszenia i wyposażenie",
+  "CPRVEHICLES.Fields.ItemsEmpty": "Przeciągnij przedmioty tutaj, aby dodać ulepszenia lub wyposażenie.",
+
+  "CPRVEHICLES.VehicleType.Land": "Lądowy",
+  "CPRVEHICLES.VehicleType.Air": "Powietrzny",
+  "CPRVEHICLES.VehicleType.Sea": "Wodny",
+
+  "CPRVEHICLES.Actions.ConfigureFromItem": "Konfiguruj z przedmiotu",
+
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Title": "Konfiguruj pojazd z przedmiotu",
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Prompt": "Wybierz przedmiot pojazdu, z którego skopiować statystyki:",
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Apply": "Zastosuj",
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Unlink": "Odłącz",
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Cancel": "Anuluj",
+
+  "CPRVEHICLES.Dialog.DeleteItem.Title": "Usuń przedmiot",
+  "CPRVEHICLES.Dialog.DeleteItem.Content": "Usunąć {name} z tego pojazdu?",
+
+  "CPRVEHICLES.Notifications.ConfiguredFromItem": "Pojazd skonfigurowany z {name}.",
+  "CPRVEHICLES.Notifications.Unlinked": "Pojazd odłączony od źródłowego przedmiotu.",
+  "CPRVEHICLES.Notifications.NoVehicleItems": "Nie znaleziono przedmiotów pojazdów w świecie.",
+  "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Do pojazdu można dodać tylko ulepszenia pojazdów."
+}
