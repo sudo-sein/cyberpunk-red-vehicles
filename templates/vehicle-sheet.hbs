@@ -1,0 +1,89 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <section class="vehicle-header">
+    <img class="vehicle-image" src="{{actor.img}}" title="{{actor.name}}" />
+    <div class="vehicle-header-fields">
+      <input class="vehicle-name" name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'CPRVEHICLES.Fields.Name'}}" {{#unless editable}}disabled{{/unless}} />
+      <div class="vehicle-type-row">
+        <label>{{localize "CPRVEHICLES.Fields.VehicleType"}}</label>
+        <select name="system.vehicleType" {{#unless editable}}disabled{{/unless}}>
+          {{#each vehicleTypeChoices as |label key|}}
+            <option value="{{key}}" {{#if (eq key ../system.vehicleType)}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      {{#if editable}}
+      <button type="button" class="configure-from-item">
+        <i class="fas fa-wrench"></i> {{localize "CPRVEHICLES.Actions.ConfigureFromItem"}}
+      </button>
+      {{/if}}
+    </div>
+  </section>
+
+  <section class="vehicle-sdp">
+    <label>{{localize "CPRVEHICLES.Fields.SDP"}}</label>
+    <div class="sdp-bar-track">
+      <div class="sdp-bar-fill" style="width: {{sdpPercent}}%"></div>
+    </div>
+    <div class="sdp-values">
+      <input type="number" name="system.sdp.value" value="{{system.sdp.value}}" min="0" max="{{system.sdp.max}}" {{#unless editable}}disabled{{/unless}} />
+      <span class="sdp-separator">/</span>
+      <input type="number" name="system.sdp.max" value="{{system.sdp.max}}" min="1" {{#unless editable}}disabled{{/unless}} />
+    </div>
+  </section>
+
+  <section class="vehicle-stats">
+    <div class="stat-field">
+      <label>{{localize "CPRVEHICLES.Fields.SP"}}</label>
+      <div class="stat-value-max">
+        <input type="number" name="system.sp.value" value="{{system.sp.value}}" min="0" max="{{system.sp.max}}" {{#unless editable}}disabled{{/unless}} />
+        <span class="sdp-separator">/</span>
+        <input type="number" name="system.sp.max" value="{{system.sp.max}}" min="0" {{#unless editable}}disabled{{/unless}} />
+      </div>
+    </div>
+    <div class="stat-field">
+      <label>{{localize "CPRVEHICLES.Fields.Seats"}}</label>
+      <input type="number" name="system.seats" value="{{system.seats}}" min="0" {{#unless editable}}disabled{{/unless}} />
+    </div>
+    <div class="stat-field">
+      <label>{{localize "CPRVEHICLES.Fields.SpeedCombat"}}</label>
+      <div class="stat-with-unit">
+        <input type="number" name="system.speedCombat" value="{{system.speedCombat}}" min="0" {{#unless editable}}disabled{{/unless}} />
+        <span class="stat-unit">m/rnd</span>
+      </div>
+    </div>
+    <div class="stat-field">
+      <label>{{localize "CPRVEHICLES.Fields.SpeedNarrative"}}</label>
+      <input type="text" name="system.speedNarrative" value="{{system.speedNarrative}}" {{#unless editable}}disabled{{/unless}} />
+    </div>
+  </section>
+
+  <section class="vehicle-items">
+    <div class="items-header">
+      <h3>{{localize "CPRVEHICLES.Fields.Items"}}</h3>
+    </div>
+    {{#if hasItems}}
+      {{#each itemsByType as |items type|}}
+        <div class="item-type-group">
+          <h4 class="item-type-label">{{type}}</h4>
+          {{#each items}}
+            <div class="item-row" data-item-id="{{this.id}}">
+              <img class="item-img" src="{{this.img}}" width="24" height="24" />
+              <span class="item-name">{{this.name}}</span>
+              {{#if @root.editable}}
+                <a class="item-edit" title="Edit"><i class="fas fa-edit"></i></a>
+                <a class="item-delete" title="Delete"><i class="fas fa-trash"></i></a>
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+      {{/each}}
+    {{else}}
+      <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
+    {{/if}}
+  </section>
+
+  <section class="vehicle-notes">
+    <h3>{{localize "CPRVEHICLES.Fields.Notes"}}</h3>
+    {{editor enrichedNotes target="system.notes" button=true owner=owner editable=editable engine="prosemirror"}}
+  </section>
+</form>

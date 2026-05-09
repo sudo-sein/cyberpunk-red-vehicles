@@ -1,0 +1,46 @@
+{
+  "id": "cyberpunk-red-vehicles",
+  "title": "Cyberpunk RED Vehicles",
+  "description": "Adds vehicles as actors to the Cyberpunk RED Core system. Place vehicles on maps, track SDP via token bars, and manage vehicle inventory.",
+  "version": "1.0.0",
+  "manifest": "",
+  "authors": [
+    {
+      "name": "sein.adamczyk"
+    }
+  ],
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "cyberpunk-red-core",
+        "type": "system",
+        "compatibility": {
+          "minimum": "0.92.0",
+          "verified": "0.92.1"
+        }
+      }
+    ]
+  },
+  "documentTypes": {
+    "Actor": {
+      "vehicle": {}
+    }
+  },
+  "esmodules": [
+    "scripts/module.js"
+  ],
+  "styles": [
+    "styles/vehicle-sheet.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ]
+}

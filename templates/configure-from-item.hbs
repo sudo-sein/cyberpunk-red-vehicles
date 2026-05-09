@@ -1,0 +1,11 @@
+<form class="cyberpunk-red-vehicles configure-dialog">
+  <p>{{localize "CPRVEHICLES.Dialog.ConfigureFromItem.Prompt"}}</p>
+  <div class="form-group">
+    <select name="vehicleItemUuid">
+      <option value="">--</option>
+      {{#each vehicles}}
+        <option value="{{this.uuid}}" {{#if (eq this.uuid ../currentUuid)}}selected{{/if}}>{{this.name}}</option>
+      {{/each}}
+    </select>
+  </div>
+</form>

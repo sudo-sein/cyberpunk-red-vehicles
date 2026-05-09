@@ -1,0 +1,295 @@
+.cyberpunk-red-vehicles.vehicle-sheet {
+  font-family: var(--cpr-font-primary, "Jost", sans-serif);
+  color: var(--cpr-text-normal, #222);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .window-content {
+  background-color: var(--cpr-background-window, #eaeaea);
+  padding: 0.5rem;
+}
+
+/* Header */
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-header {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-image {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border: 2px solid var(--cpr-background-border, #b90202);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
+  cursor: pointer;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-header-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-name {
+  font-family: var(--cpr-font-hero, "Rubik", sans-serif);
+  font-size: var(--cpr-font-large, 1.5rem);
+  font-weight: bold;
+  border: none;
+  border-bottom: 2px solid var(--cpr-background-border, #b90202);
+  background: transparent;
+  color: var(--cpr-text-normal, #222);
+  width: 100%;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-type-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-type-row label {
+  font-weight: bold;
+  font-size: var(--cpr-font-small, 0.9rem);
+  white-space: nowrap;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-type-row select {
+  background-color: var(--cpr-background-box, #eaeaea);
+  border: 1px solid var(--cpr-background-border, #b90202);
+  color: var(--cpr-text-normal, #222);
+  font-family: var(--cpr-font-primary, "Jost", sans-serif);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .configure-from-item {
+  align-self: flex-start;
+  background-color: var(--cpr-background-header, #0d0b0c);
+  color: var(--cpr-color-white, #eaeaea);
+  border: 1px solid var(--cpr-background-border, #b90202);
+  cursor: pointer;
+  padding: 0.15rem 0.5rem;
+  font-size: var(--cpr-font-small, 0.9rem);
+  font-family: var(--cpr-font-primary, "Jost", sans-serif);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .configure-from-item:hover {
+  background-color: var(--cpr-background-foundry-hover, #b90202);
+}
+
+/* SDP Bar */
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-sdp {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-top: 2px solid var(--cpr-background-border, #b90202);
+  border-bottom: 2px solid var(--cpr-background-border, #b90202);
+  margin-bottom: 0.5rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-sdp > label {
+  font-weight: bold;
+  font-size: var(--cpr-font-normal, 1rem);
+  white-space: nowrap;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .sdp-bar-track {
+  flex: 1;
+  height: 1rem;
+  background-color: var(--cpr-color-dark-grey, #444);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .sdp-bar-fill {
+  height: 100%;
+  background-color: var(--cpr-color-red, #b90202);
+  transition: width 0.3s ease;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .sdp-values {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  white-space: nowrap;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .sdp-values input {
+  width: 2.5rem;
+  text-align: center;
+  background-color: var(--cpr-background-box, #eaeaea);
+  border: 1px solid var(--cpr-color-medium-grey, #666);
+  color: var(--cpr-text-normal, #222);
+  font-family: var(--cpr-font-primary, "Jost", sans-serif);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .sdp-separator {
+  font-weight: bold;
+}
+
+/* Stats Row */
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .stat-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .stat-field label {
+  font-weight: bold;
+  font-size: var(--cpr-font-small, 0.9rem);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .stat-field input {
+  background-color: var(--cpr-background-box, #eaeaea);
+  border: 1px solid var(--cpr-color-medium-grey, #666);
+  color: var(--cpr-text-normal, #222);
+  font-family: var(--cpr-font-primary, "Jost", sans-serif);
+  text-align: center;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .stat-value-max {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .stat-value-max input {
+  width: 2.5rem;
+  text-align: center;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .stat-with-unit {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .stat-with-unit input {
+  flex: 1;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .stat-unit {
+  font-size: var(--cpr-font-smaller, 0.7rem);
+  color: var(--cpr-color-medium-grey, #666);
+  white-space: nowrap;
+}
+
+/* Items Section */
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-items {
+  border-top: 2px solid var(--cpr-background-border, #b90202);
+  margin-bottom: 0.5rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--cpr-background-header, #0d0b0c);
+  color: var(--cpr-text-header, #eaeaea);
+  padding: 0.15rem 0.5rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .items-header h3 {
+  margin: 0;
+  font-size: var(--cpr-font-normal, 1rem);
+  border: none;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .item-type-label {
+  font-size: var(--cpr-font-small, 0.9rem);
+  text-transform: capitalize;
+  padding: 0.1rem 0.5rem;
+  background-color: var(--cpr-background-cyberdeck-section-header, #ffc3b6);
+  margin: 0;
+  border: none;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .item-row:nth-child(even) {
+  background-color: var(--cpr-background-row-even, #eaeaea);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .item-row:nth-child(odd) {
+  background-color: var(--cpr-background-row-odd, #ffc3b6);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .item-img {
+  border: none;
+  flex-shrink: 0;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .item-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .item-edit,
+.cyberpunk-red-vehicles.vehicle-sheet .item-delete {
+  cursor: pointer;
+  color: var(--cpr-text-icon-normal, #666);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .item-edit:hover,
+.cyberpunk-red-vehicles.vehicle-sheet .item-delete:hover {
+  color: var(--cpr-text-icon-highlight, #b90202);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .items-empty {
+  padding: 0.5rem;
+  text-align: center;
+  color: var(--cpr-color-medium-grey, #666);
+  font-style: italic;
+}
+
+/* Notes Section */
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-notes {
+  border-top: 2px solid var(--cpr-background-border, #b90202);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100px;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-notes h3 {
+  background-color: var(--cpr-background-header, #0d0b0c);
+  color: var(--cpr-text-header, #eaeaea);
+  padding: 0.15rem 0.5rem;
+  margin: 0;
+  font-size: var(--cpr-font-normal, 1rem);
+  border: none;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-notes .editor {
+  flex: 1;
+  min-height: 80px;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-notes .editor-content {
+  background-color: var(--cpr-background-box, #eaeaea);
+  color: var(--cpr-text-normal, #222);
+}
+
+/* Configure Dialog */
+.cyberpunk-red-vehicles.configure-dialog .form-group {
+  margin: 0.5rem 0;
+}
+
+.cyberpunk-red-vehicles.configure-dialog select {
+  width: 100%;
+  padding: 0.25rem;
+}

@@ -1,0 +1,37 @@
+{
+  "TYPES.Actor.cyberpunk-red-vehicles.vehicle": "Vehicle",
+  "CPRVEHICLES.SheetLabel": "Vehicle Sheet",
+  "CPRVEHICLES.ActorType": "Vehicle",
+
+  "CPRVEHICLES.Fields.Name": "Vehicle Name",
+  "CPRVEHICLES.Fields.SP": "SP",
+  "CPRVEHICLES.Fields.SDP": "SDP",
+  "CPRVEHICLES.Fields.SDPLong": "Structural Damage Points",
+  "CPRVEHICLES.Fields.Seats": "Seats",
+  "CPRVEHICLES.Fields.SpeedCombat": "Combat Speed",
+  "CPRVEHICLES.Fields.SpeedNarrative": "Speed",
+  "CPRVEHICLES.Fields.VehicleType": "Type",
+  "CPRVEHICLES.Fields.Notes": "Notes",
+  "CPRVEHICLES.Fields.Items": "Upgrades & Gear",
+  "CPRVEHICLES.Fields.ItemsEmpty": "Drag items here to add upgrades or gear.",
+
+  "CPRVEHICLES.VehicleType.Land": "Land",
+  "CPRVEHICLES.VehicleType.Air": "Air",
+  "CPRVEHICLES.VehicleType.Sea": "Sea",
+
+  "CPRVEHICLES.Actions.ConfigureFromItem": "Configure from Item",
+
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Title": "Configure Vehicle from Item",
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Prompt": "Select a vehicle item to copy stats from:",
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Apply": "Apply",
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Unlink": "Unlink",
+  "CPRVEHICLES.Dialog.ConfigureFromItem.Cancel": "Cancel",
+
+  "CPRVEHICLES.Dialog.DeleteItem.Title": "Delete Item",
+  "CPRVEHICLES.Dialog.DeleteItem.Content": "Delete {name} from this vehicle?",
+
+  "CPRVEHICLES.Notifications.ConfiguredFromItem": "Vehicle configured from {name}.",
+  "CPRVEHICLES.Notifications.Unlinked": "Vehicle unlinked from source item.",
+  "CPRVEHICLES.Notifications.NoVehicleItems": "No vehicle items found in the world.",
+  "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Only vehicle upgrades can be added to a vehicle."
+}
