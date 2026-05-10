@@ -27,6 +27,10 @@ export default class CPRVehicleSheet extends ActorSheet {
       if (!context.itemsByType[type]) context.itemsByType[type] = [];
       context.itemsByType[type].push(item);
     }
+    context.typeLabels = {};
+    for (const type of Object.keys(context.itemsByType)) {
+      context.typeLabels[type] = game.i18n.localize(`TYPES.Item.${type}`);
+    }
     context.hasItems = this.actor.items.size > 0;
     context.editable = this.isEditable;
     context.sourceItemUuid = this.actor.getFlag("cyberpunk-red-vehicles", "sourceItemUuid") || null;

@@ -33,5 +33,6 @@
   "CPRVEHICLES.Notifications.ConfiguredFromItem": "Pojazd skonfigurowany z {name}.",
   "CPRVEHICLES.Notifications.Unlinked": "Pojazd odłączony od źródłowego przedmiotu.",
   "CPRVEHICLES.Notifications.NoVehicleItems": "Nie znaleziono przedmiotów pojazdów w świecie.",
-  "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Do pojazdu można dodać tylko ulepszenia pojazdów."
+  "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Do pojazdu można dodać tylko ulepszenia pojazdów.",
+  "CPRVEHICLES.Notifications.DamageReversed": "Cofnięto {damage} obrażeń dla {name}."
 }

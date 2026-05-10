@@ -64,7 +64,7 @@
     {{#if hasItems}}
       {{#each itemsByType as |items type|}}
         <div class="item-type-group">
-          <h4 class="item-type-label">{{type}}</h4>
+          <h4 class="item-type-label">{{lookup @root.typeLabels type}}</h4>
           {{#each items}}
             <div class="item-row" data-item-id="{{this.id}}">
               <img class="item-img" src="{{this.img}}" width="24" height="24" />

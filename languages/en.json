@@ -33,5 +33,6 @@
   "CPRVEHICLES.Notifications.ConfiguredFromItem": "Vehicle configured from {name}.",
   "CPRVEHICLES.Notifications.Unlinked": "Vehicle unlinked from source item.",
   "CPRVEHICLES.Notifications.NoVehicleItems": "No vehicle items found in the world.",
-  "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Only vehicle upgrades can be added to a vehicle."
+  "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Only vehicle upgrades can be added to a vehicle.",
+  "CPRVEHICLES.Notifications.DamageReversed": "Reversed {damage} damage to {name}."
 }
