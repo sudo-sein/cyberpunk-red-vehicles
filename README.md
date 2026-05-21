@@ -1,6 +1,7 @@
 ![](https://img.shields.io/badge/Foundry-v12-informational)
 ![Latest Release Download Count](https://img.shields.io/github/downloads/sudo-sein/cyberpunk-red-vehicles/latest/module.zip)
-![Total Download Count](https://img.shields.io/github/downloads/sudo-sein/cyberpunk-red-vehicles/total)
+![Total Download Count](https://img.shields.io/github/downloads/sudo-sein/cyberpunk-red-vehicles/module.zip?displayAssetName=false&label=total%20downloads)
+
 
 # Cyberpunk RED Vehicles
 
