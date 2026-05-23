@@ -1,10 +1,12 @@
 const DAMAGE_CARD_TEMPLATE = `systems/cyberpunk-red-core/templates/chat/cpr-damage-application-card.hbs`;
+const DEFAULT_VEHICLE_IMG = "systems/cyberpunk-red-core/icons/compendium/default/Default_Vehicle.svg";
 const ARMORED_CHASSIS = "Armored Chassis";
 const ARMORED_CHASSIS_SP = 13;
 
 export default class CPRVehicleActor extends Actor {
   static async create(data, options = {}) {
     const createData = foundry.utils.deepClone(data);
+    if (!createData.img) createData.img = DEFAULT_VEHICLE_IMG;
     if (!createData.prototypeToken) {
       createData.prototypeToken = {};
     }
@@ -13,6 +15,7 @@ export default class CPRVehicleActor extends Actor {
       disposition: CONST.TOKEN_DISPOSITIONS.NEUTRAL,
       displayBars: CONST.TOKEN_DISPLAY_MODES.NONE,
       bar1: { attribute: "sdp" },
+      texture: { src: DEFAULT_VEHICLE_IMG },
     }, { overwrite: false });
     return super.create(createData, options);
   }
