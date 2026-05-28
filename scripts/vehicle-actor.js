@@ -5,6 +5,7 @@ import {
   isVehicleWeaponItem,
   partitionVehicleWeapons,
 } from "./vehicle-weapon-handling.js";
+import { computeVehicleBaseStatsFromCurrent } from "./vehicle-upgrade-stats.mjs";
 
 const DAMAGE_CARD_TEMPLATE = `systems/cyberpunk-red-core/templates/chat/cpr-damage-application-card.hbs`;
 const DEFAULT_VEHICLE_IMG = "systems/cyberpunk-red-core/icons/compendium/default/Default_Vehicle.svg";
@@ -168,15 +169,7 @@ export default class CPRVehicleActor extends Actor {
   _computeBaseStatsFromCurrentWithUpgrades(upgrades) {
     const current = this._getCurrentStatsSnapshot();
     const totals = this._collectUpgradeTotals(upgrades);
-    return {
-      sdpMax: Math.max(0, current.sdpMax - totals.sdpMax),
-      spMax: Math.max(
-        0,
-        current.spMax - (totals.hasArmoredChassis ? ARMORED_CHASSIS_SP : 0)
-      ),
-      seats: Math.max(0, current.seats - totals.seats),
-      speedCombat: Math.max(0, current.speedCombat - totals.speedCombat),
-    };
+    return computeVehicleBaseStatsFromCurrent(current, totals, ARMORED_CHASSIS_SP);
   }
 
   isVehicleUpgradeInstalled(item) {
@@ -191,6 +184,15 @@ export default class CPRVehicleActor extends Actor {
       speedCombat: Math.max(0, Number(baseStats?.speedCombat ?? 0)),
     };
     await this.setFlag(MODULE_ID, BASE_STATS_FLAG, safeBaseStats);
+  }
+
+  async updateVehicleBaseStatsFromCurrent() {
+    const installedUpgrades = this.items.filter((item) =>
+      this._isVehicleUpgradeInstalled(item)
+    );
+    await this.setVehicleBaseStats(
+      this._computeBaseStatsFromCurrentWithUpgrades(installedUpgrades)
+    );
   }
 
   async setVehicleUpgradeInstalled(itemId, installed) {

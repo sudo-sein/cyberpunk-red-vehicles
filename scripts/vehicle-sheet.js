@@ -1,3 +1,5 @@
+import { hasVehicleBaseStatField } from "./vehicle-upgrade-stats.mjs";
+
 export default class CPRVehicleSheet extends ActorSheet {
   static MODULE_ID = "cyberpunk-red-vehicles";
 
@@ -74,6 +76,14 @@ export default class CPRVehicleSheet extends ActorSheet {
     context.sourceItemUuid = this.actor.getFlag("cyberpunk-red-vehicles", "sourceItemUuid") || null;
     context.enrichedNotes = await TextEditor.enrichHTML(system.notes, { async: true });
     return context;
+  }
+
+  async _updateObject(event, formData) {
+    await super._updateObject(event, formData);
+    if (!hasVehicleBaseStatField(formData)) return;
+
+    await this.actor.updateVehicleBaseStatsFromCurrent();
+    await this.actor.recalculateVehicleUpgrades();
   }
 
   activateListeners(html) {
