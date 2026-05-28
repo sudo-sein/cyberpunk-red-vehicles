@@ -1,4 +1,6 @@
 export default class CPRVehicleSheet extends ActorSheet {
+  static MODULE_ID = "cyberpunk-red-vehicles";
+
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["cyberpunk-red-vehicles", "vehicle-sheet"],
@@ -21,17 +23,41 @@ export default class CPRVehicleSheet extends ActorSheet {
       air: game.i18n.localize("CPRVEHICLES.VehicleType.Air"),
       sea: game.i18n.localize("CPRVEHICLES.VehicleType.Sea"),
     };
-    context.itemsByType = {};
+    context.installedVehicleUpgrades = [];
+    context.storedItemsByType = {};
+
     for (const item of this.actor.items) {
-      const type = item.type;
-      if (!context.itemsByType[type]) context.itemsByType[type] = [];
-      context.itemsByType[type].push(item);
+      const isVehicleUpgrade =
+        item.type === "itemUpgrade" && item.system?.type === "vehicle";
+      const isInstalled = isVehicleUpgrade && this.actor.isVehicleUpgradeInstalled(item);
+      const enrichedItem = {
+        id: item.id,
+        img: item.img,
+        name: item.name,
+        type: item.type,
+        canToggleInstall: isVehicleUpgrade,
+        isInstalled,
+      };
+
+      if (isInstalled) {
+        context.installedVehicleUpgrades.push(enrichedItem);
+        continue;
+      }
+
+      if (!context.storedItemsByType[item.type]) {
+        context.storedItemsByType[item.type] = [];
+      }
+      context.storedItemsByType[item.type].push(enrichedItem);
     }
+
     context.typeLabels = {};
-    for (const type of Object.keys(context.itemsByType)) {
+    for (const type of Object.keys(context.storedItemsByType)) {
       context.typeLabels[type] = game.i18n.localize(`TYPES.Item.${type}`);
     }
+
     context.hasItems = this.actor.items.size > 0;
+    context.hasInstalledVehicleUpgrades = context.installedVehicleUpgrades.length > 0;
+    context.hasStoredItems = Object.keys(context.storedItemsByType).length > 0;
     context.editable = this.isEditable;
     context.sourceItemUuid = this.actor.getFlag("cyberpunk-red-vehicles", "sourceItemUuid") || null;
     context.enrichedNotes = await TextEditor.enrichHTML(system.notes, { async: true });
@@ -74,6 +100,13 @@ export default class CPRVehicleSheet extends ActorSheet {
     });
 
     html.find(".configure-from-item").click(() => this._configureFromItem());
+
+    html.find(".item-toggle-install").click(async (ev) => {
+      const row = ev.currentTarget.closest("[data-item-id]");
+      if (!row?.dataset.itemId) return;
+      const targetState = ev.currentTarget.dataset.install === "true";
+      await this.actor.setVehicleUpgradeInstalled(row.dataset.itemId, targetState);
+    });
   }
 
   async _onDropItem(event, data) {
@@ -117,12 +150,21 @@ export default class CPRVehicleSheet extends ActorSheet {
               "prototypeToken.texture.src": item.img,
               "system.sdp.value": item.system.sdp,
               "system.sdp.max": item.system.sdp,
+              "system.sp.value": 0,
+              "system.sp.max": 0,
               "system.seats": item.system.seats,
               "system.speedCombat": item.system.speedCombat,
               "system.speedNarrative": item.system.speedNarrative,
               "system.notes": item.system.description?.value ?? "",
             });
+            await this.actor.setVehicleBaseStats({
+              sdpMax: item.system.sdp,
+              spMax: 0,
+              seats: item.system.seats,
+              speedCombat: item.system.speedCombat,
+            });
             await this.actor.setFlag("cyberpunk-red-vehicles", "sourceItemUuid", uuid);
+            await this.actor.recalculateVehicleUpgrades();
             ui.notifications.info(
               game.i18n.format("CPRVEHICLES.Notifications.ConfiguredFromItem", { name: item.name })
             );

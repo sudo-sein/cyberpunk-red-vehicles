@@ -1,18 +1,17 @@
 {
   "TYPES.Actor.cyberpunk-red-vehicles.vehicle": "Vehicle",
   "CPRVEHICLES.SheetLabel": "Vehicle Sheet",
-  "CPRVEHICLES.ActorType": "Vehicle",
 
   "CPRVEHICLES.Fields.Name": "Vehicle Name",
   "CPRVEHICLES.Fields.SP": "SP",
   "CPRVEHICLES.Fields.SDP": "SDP",
-  "CPRVEHICLES.Fields.SDPLong": "Structural Damage Points",
   "CPRVEHICLES.Fields.Seats": "Seats",
   "CPRVEHICLES.Fields.SpeedCombat": "Combat Speed",
   "CPRVEHICLES.Fields.SpeedNarrative": "Speed",
   "CPRVEHICLES.Fields.VehicleType": "Type",
   "CPRVEHICLES.Fields.Notes": "Notes",
-  "CPRVEHICLES.Fields.Items": "Upgrades & Gear",
+  "CPRVEHICLES.Fields.Trunk": "Trunk",
+  "CPRVEHICLES.Fields.InstalledUpgrades": "Installed",
   "CPRVEHICLES.Fields.ItemsEmpty": "Drag items here to add upgrades or gear.",
 
   "CPRVEHICLES.VehicleType.Land": "Land",
@@ -20,6 +19,8 @@
   "CPRVEHICLES.VehicleType.Sea": "Sea",
 
   "CPRVEHICLES.Actions.ConfigureFromItem": "Configure from Item",
+  "CPRVEHICLES.Actions.InstallUpgrade": "Install",
+  "CPRVEHICLES.Actions.UninstallUpgrade": "Uninstall",
 
   "CPRVEHICLES.Dialog.ConfigureFromItem.Title": "Configure Vehicle from Item",
   "CPRVEHICLES.Dialog.ConfigureFromItem.Prompt": "Select a vehicle item to copy stats from:",
@@ -34,5 +35,6 @@
   "CPRVEHICLES.Notifications.Unlinked": "Vehicle unlinked from source item.",
   "CPRVEHICLES.Notifications.NoVehicleItems": "No vehicle items found in the world.",
   "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Only vehicle upgrades can be added to a vehicle.",
+  "CPRVEHICLES.Notifications.UpgradeAlreadyInstalled": "{itemName} cannot be installed because {conflictName} from the same source pack is already installed.",
   "CPRVEHICLES.Notifications.DamageReversed": "Reversed {damage} damage to {name}."
 }

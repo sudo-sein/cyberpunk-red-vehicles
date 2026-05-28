@@ -59,10 +59,33 @@
 
   <section class="vehicle-items">
     <div class="items-header">
-      <h3>{{localize "CPRVEHICLES.Fields.Items"}}</h3>
+      <h3>{{localize "CPRVEHICLES.Fields.InstalledUpgrades"}}</h3>
     </div>
-    {{#if hasItems}}
-      {{#each itemsByType as |items type|}}
+    {{#if hasInstalledVehicleUpgrades}}
+      {{#each installedVehicleUpgrades}}
+        <div class="item-row" data-item-id="{{this.id}}">
+          <img class="item-img" src="{{this.img}}" width="24" height="24" />
+          <span class="item-name">{{this.name}}</span>
+          {{#if @root.editable}}
+            <a class="item-toggle-install" data-install="false" title="{{localize 'CPRVEHICLES.Actions.UninstallUpgrade'}}">
+              <i class="fas fa-eject"></i>
+            </a>
+            <a class="item-edit" title="Edit"><i class="fas fa-edit"></i></a>
+            <a class="item-delete" title="Delete"><i class="fas fa-trash"></i></a>
+          {{/if}}
+        </div>
+      {{/each}}
+    {{else}}
+      <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
+    {{/if}}
+  </section>
+
+  <section class="vehicle-items">
+    <div class="items-header">
+      <h3>{{localize "CPRVEHICLES.Fields.Trunk"}}</h3>
+    </div>
+    {{#if hasStoredItems}}
+      {{#each storedItemsByType as |items type|}}
         <div class="item-type-group">
           <h4 class="item-type-label">{{lookup @root.typeLabels type}}</h4>
           {{#each items}}
@@ -70,6 +93,11 @@
               <img class="item-img" src="{{this.img}}" width="24" height="24" />
               <span class="item-name">{{this.name}}</span>
               {{#if @root.editable}}
+                {{#if this.canToggleInstall}}
+                  <a class="item-toggle-install" data-install="true" title="{{localize 'CPRVEHICLES.Actions.InstallUpgrade'}}">
+                    <i class="fas fa-plug"></i>
+                  </a>
+                {{/if}}
                 <a class="item-edit" title="Edit"><i class="fas fa-edit"></i></a>
                 <a class="item-delete" title="Delete"><i class="fas fa-trash"></i></a>
               {{/if}}
@@ -77,9 +105,10 @@
           {{/each}}
         </div>
       {{/each}}
-    {{else}}
-      <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
     {{/if}}
+    {{#unless hasStoredItems}}
+      <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
+    {{/unless}}
   </section>
 
   <section class="vehicle-notes">
