@@ -58,4 +58,11 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", () => {
   console.log(`${MODULE_ID} | Module ready. Actor.TYPES:`, Actor.TYPES);
+
+  const vehicleActors = game.actors.filter((actor) => actor.type === VEHICLE_TYPE);
+  for (const actor of vehicleActors) {
+    if (typeof actor.ensureVehicleUpgradeInstallStateMigration === "function") {
+      actor.ensureVehicleUpgradeInstallStateMigration();
+    }
+  }
 });

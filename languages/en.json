@@ -1,18 +1,19 @@
 {
   "TYPES.Actor.cyberpunk-red-vehicles.vehicle": "Vehicle",
   "CPRVEHICLES.SheetLabel": "Vehicle Sheet",
-  "CPRVEHICLES.ActorType": "Vehicle",
 
   "CPRVEHICLES.Fields.Name": "Vehicle Name",
   "CPRVEHICLES.Fields.SP": "SP",
   "CPRVEHICLES.Fields.SDP": "SDP",
-  "CPRVEHICLES.Fields.SDPLong": "Structural Damage Points",
   "CPRVEHICLES.Fields.Seats": "Seats",
   "CPRVEHICLES.Fields.SpeedCombat": "Combat Speed",
   "CPRVEHICLES.Fields.SpeedNarrative": "Speed",
   "CPRVEHICLES.Fields.VehicleType": "Type",
   "CPRVEHICLES.Fields.Notes": "Notes",
-  "CPRVEHICLES.Fields.Items": "Upgrades & Gear",
+  "CPRVEHICLES.Fields.Trunk": "Trunk",
+  "CPRVEHICLES.Fields.MountedWeapons": "Mounted Weapons",
+  "CPRVEHICLES.Fields.Ammo": "Ammo",
+  "CPRVEHICLES.Fields.InstalledUpgrades": "Installed",
   "CPRVEHICLES.Fields.ItemsEmpty": "Drag items here to add upgrades or gear.",
 
   "CPRVEHICLES.VehicleType.Land": "Land",
@@ -20,6 +21,12 @@
   "CPRVEHICLES.VehicleType.Sea": "Sea",
 
   "CPRVEHICLES.Actions.ConfigureFromItem": "Configure from Item",
+  "CPRVEHICLES.Actions.InstallUpgrade": "Install",
+  "CPRVEHICLES.Actions.UninstallUpgrade": "Uninstall",
+  "CPRVEHICLES.Actions.InstallWeapon": "Mount",
+  "CPRVEHICLES.Actions.UnmountWeapon": "Unmount",
+  "CPRVEHICLES.Actions.ChangeAmmo": "Change Ammo",
+  "CPRVEHICLES.Actions.Reload": "Reload",
 
   "CPRVEHICLES.Dialog.ConfigureFromItem.Title": "Configure Vehicle from Item",
   "CPRVEHICLES.Dialog.ConfigureFromItem.Prompt": "Select a vehicle item to copy stats from:",
@@ -30,9 +37,25 @@
   "CPRVEHICLES.Dialog.DeleteItem.Title": "Delete Item",
   "CPRVEHICLES.Dialog.DeleteItem.Content": "Delete {name} from this vehicle?",
 
+  "CPRVEHICLES.Dialog.ActorPicker.Title": "Choose Shooter",
+  "CPRVEHICLES.Dialog.ActorPicker.Label": "Actor",
+  "CPRVEHICLES.Dialog.ActorPicker.Confirm": "Select",
+  "CPRVEHICLES.Dialog.ActorPicker.Cancel": "Cancel",
+
   "CPRVEHICLES.Notifications.ConfiguredFromItem": "Vehicle configured from {name}.",
   "CPRVEHICLES.Notifications.Unlinked": "Vehicle unlinked from source item.",
   "CPRVEHICLES.Notifications.NoVehicleItems": "No vehicle items found in the world.",
   "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Only vehicle upgrades can be added to a vehicle.",
-  "CPRVEHICLES.Notifications.DamageReversed": "Reversed {damage} damage to {name}."
+  "CPRVEHICLES.Notifications.UpgradeAlreadyInstalled": "{itemName} cannot be installed because {conflictName} from the same source pack is already installed.",
+  "CPRVEHICLES.Notifications.DamageReversed": "Reversed {damage} damage to {name}.",
+  "CPRVEHICLES.Notifications.WeaponMissingUpgrade": "This weapon needs a compatible installed vehicle upgrade.",
+  "CPRVEHICLES.Notifications.WeaponMountOccupied": "All compatible weapon mounts are occupied.",
+  "CPRVEHICLES.Notifications.WeaponNotSupported": "This weapon cannot be mounted on this vehicle.",
+  "CPRVEHICLES.Notifications.WeaponAlreadyInstalled": "This weapon is already mounted.",
+  "CPRVEHICLES.Notifications.WeaponNotInstalled": "This weapon must be mounted first.",
+  "CPRVEHICLES.Notifications.WeaponActionNotSupported": "This weapon action is not supported.",
+  "CPRVEHICLES.Notifications.ActorSelectionCancelled": "Attack cancelled: no shooter selected.",
+  "CPRVEHICLES.Notifications.RollUnavailable": "Roll is not available for this weapon.",
+  "CPRVEHICLES.Notifications.DamageUnavailableSuppressive": "Damage roll is unavailable in suppressive fire mode.",
+  "CPRVEHICLES.Notifications.RollCancelled": "Roll cancelled."
 }
