@@ -18,6 +18,21 @@ const WEAPON_TYPE_PRIORITY = {
   rocketlauncher: ["rocketPod", "heavyMount"],
 };
 
+const FLAMETHROWER_MOUNT_PRIORITY = [
+  "flamethrower",
+  "heavyMount",
+  "machineGun",
+  "rocketPod",
+  "meleeMount",
+];
+
+const MELEE_WEAPON_TYPES = new Set([
+  "lightmelee",
+  "medmelee",
+  "heavymelee",
+  "vheavymelee",
+]);
+
 function normalize(value) {
   return String(value ?? "")
     .trim()
@@ -43,6 +58,13 @@ function isHeavyWeaponSkill(weapon) {
 
 function getWeaponTypeKey(weapon) {
   return normalize(weapon?.system?.weaponType);
+}
+
+function isFlamethrowerWeapon(weapon) {
+  return (
+    normalize(weapon?.name).includes("flamethrower") ||
+    normalize(getItemOriginalName(weapon)).includes("flamethrower")
+  );
 }
 
 export function getVehicleWeaponState(item, moduleId) {
@@ -113,8 +135,12 @@ export function getWeaponAllowedMounts(weapon) {
 
   if (typeKey === "assaultrifle") mounts.add("machineGun");
   if (typeKey === "rocketlauncher") mounts.add("rocketPod");
-  if (typeKey === "flamethrower") mounts.add("flamethrower");
-  if (typeKey === "meleeweapon") mounts.add("meleeMount");
+  if (typeKey === "flamethrower" || isFlamethrowerWeapon(weapon)) {
+    mounts.add("flamethrower");
+  }
+  if (typeKey === "meleeweapon" || MELEE_WEAPON_TYPES.has(typeKey)) {
+    mounts.add("meleeMount");
+  }
 
   if (typeKey === "rocketlauncher" || typeKey === "grenadelauncher" || isHeavyWeaponSkill(weapon)) {
     mounts.add("heavyMount");
@@ -142,7 +168,9 @@ export function chooseMountTypeForWeapon(actor, weapon, moduleId) {
   }
 
   const typeKey = getWeaponTypeKey(weapon);
-  const priority = WEAPON_TYPE_PRIORITY[typeKey] ?? DEFAULT_MOUNT_ORDER;
+  const priority = isFlamethrowerWeapon(weapon)
+    ? FLAMETHROWER_MOUNT_PRIORITY
+    : WEAPON_TYPE_PRIORITY[typeKey] ?? DEFAULT_MOUNT_ORDER;
   const sortedChoices = availableAllowed.sort(
     (a, b) => priority.indexOf(a) - priority.indexOf(b)
   );
