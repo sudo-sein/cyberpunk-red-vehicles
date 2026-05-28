@@ -11,6 +11,8 @@
   "CPRVEHICLES.Fields.VehicleType": "Typ",
   "CPRVEHICLES.Fields.Notes": "Notatki",
   "CPRVEHICLES.Fields.Trunk": "Bagażnik",
+  "CPRVEHICLES.Fields.MountedWeapons": "Zamontowana broń",
+  "CPRVEHICLES.Fields.Ammo": "Amunicja",
   "CPRVEHICLES.Fields.InstalledUpgrades": "Zainstalowane",
   "CPRVEHICLES.Fields.ItemsEmpty": "Przeciągnij przedmioty tutaj, aby dodać ulepszenia lub wyposażenie.",
 
@@ -21,6 +23,10 @@
   "CPRVEHICLES.Actions.ConfigureFromItem": "Konfiguruj z przedmiotu",
   "CPRVEHICLES.Actions.InstallUpgrade": "Zainstaluj",
   "CPRVEHICLES.Actions.UninstallUpgrade": "Odinstaluj",
+  "CPRVEHICLES.Actions.InstallWeapon": "Zamontuj",
+  "CPRVEHICLES.Actions.UnmountWeapon": "Zdemontuj",
+  "CPRVEHICLES.Actions.ChangeAmmo": "Zmień amunicję",
+  "CPRVEHICLES.Actions.Reload": "Przeładuj",
 
   "CPRVEHICLES.Dialog.ConfigureFromItem.Title": "Konfiguruj pojazd z przedmiotu",
   "CPRVEHICLES.Dialog.ConfigureFromItem.Prompt": "Wybierz przedmiot pojazdu, z którego skopiować statystyki:",
@@ -31,10 +37,25 @@
   "CPRVEHICLES.Dialog.DeleteItem.Title": "Usuń przedmiot",
   "CPRVEHICLES.Dialog.DeleteItem.Content": "Usunąć {name} z tego pojazdu?",
 
+  "CPRVEHICLES.Dialog.ActorPicker.Title": "Wybierz strzelca",
+  "CPRVEHICLES.Dialog.ActorPicker.Label": "Postać",
+  "CPRVEHICLES.Dialog.ActorPicker.Confirm": "Wybierz",
+  "CPRVEHICLES.Dialog.ActorPicker.Cancel": "Anuluj",
+
   "CPRVEHICLES.Notifications.ConfiguredFromItem": "Pojazd skonfigurowany z {name}.",
   "CPRVEHICLES.Notifications.Unlinked": "Pojazd odłączony od źródłowego przedmiotu.",
   "CPRVEHICLES.Notifications.NoVehicleItems": "Nie znaleziono przedmiotów pojazdów w świecie.",
   "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Do pojazdu można dodać tylko ulepszenia pojazdów.",
   "CPRVEHICLES.Notifications.UpgradeAlreadyInstalled": "Nie można zainstalować {itemName}, bo {conflictName} z tej samej paczki źródłowej jest już zainstalowany.",
-  "CPRVEHICLES.Notifications.DamageReversed": "Cofnięto {damage} obrażeń dla {name}."
+  "CPRVEHICLES.Notifications.DamageReversed": "Cofnięto {damage} obrażeń dla {name}.",
+  "CPRVEHICLES.Notifications.WeaponMissingUpgrade": "Ta broń wymaga zgodnego, zainstalowanego ulepszenia pojazdu.",
+  "CPRVEHICLES.Notifications.WeaponMountOccupied": "Wszystkie zgodne sloty montażowe są zajęte.",
+  "CPRVEHICLES.Notifications.WeaponNotSupported": "Ta broń nie może być zamontowana w tym pojeździe.",
+  "CPRVEHICLES.Notifications.WeaponAlreadyInstalled": "Ta broń jest już zamontowana.",
+  "CPRVEHICLES.Notifications.WeaponNotInstalled": "Najpierw zamontuj tę broń.",
+  "CPRVEHICLES.Notifications.WeaponActionNotSupported": "Ta akcja broni nie jest obsługiwana.",
+  "CPRVEHICLES.Notifications.ActorSelectionCancelled": "Atak anulowany: nie wybrano strzelca.",
+  "CPRVEHICLES.Notifications.RollUnavailable": "Rzut nie jest dostępny dla tej broni.",
+  "CPRVEHICLES.Notifications.DamageUnavailableSuppressive": "Rzut obrażeń jest niedostępny w trybie ognia zaporowego.",
+  "CPRVEHICLES.Notifications.RollCancelled": "Rzut anulowany."
 }

@@ -5,7 +5,7 @@
 
 # Cyberpunk RED Vehicles
 
-A [Foundry VTT](https://foundryvtt.com/) module for the [Cyberpunk RED Core](https://gitlab.com/cyberpunk-red-team/fvtt-cyberpunk-red-core) system that adds **vehicles as first-class actors**. Place them on the map, track structural damage via token bars, manage upgrades, and configure stats from existing vehicle items.
+A [Foundry VTT](https://foundryvtt.com/) module for the [Cyberpunk RED Core](https://gitlab.com/cyberpunk-red-team/fvtt-cyberpunk-red-core) system that adds **vehicles as first-class actors**. Place them on the map, track structural damage via token bars, manage upgrades, mount weapons, and roll attacks/damage directly from the vehicle sheet.
 
 ![Vehicle Sheet](docs/sheet.png)
 
@@ -16,6 +16,10 @@ A [Foundry VTT](https://foundryvtt.com/) module for the [Cyberpunk RED Core](htt
 - **Token Integration** — vehicles are created as linked tokens with SDP displayed on the token bar by default.
 - **Configure from Item** — one-click dialog to copy stats (SDP, seats, speed, image, notes) from any vehicle item in your world.
 - **Vehicle Upgrades** — drag vehicle upgrade items onto the sheet; modifiers are automatically applied to SDP, seats, and combat speed.
+- **Vehicle Weapon Mounting** — keep weapons in trunk inventory and mount them only when compatible upgrades are installed.
+- **Mounted Weapon Actions** — mook-style controls on mounted weapons: Aim, Change Ammo, Reload, Roll Attack, and Roll Damage.
+- **Vehicle Combat Flow** — attack rolls use the active assigned actor (with picker fallback), while damage rolls stay vehicle-driven and ammo-aware.
+- **Trunk Quantity Controls** — all trunk items show quantity; ammo is editable, non-ammo quantities are read-only.
 - **Localization** — English and Polish translations included.
 
 ## Installation
@@ -43,7 +47,9 @@ https://github.com/sudo-sein/cyberpunk-red-vehicles/releases/latest/download/mod
 2. Create a new actor and select the **Vehicle** type.
 3. Fill in the vehicle stats manually, or click **Configure from Item** to copy stats from a vehicle item in your world.
 4. Drag vehicle upgrade items onto the sheet to apply modifiers.
-5. Place the vehicle token on a scene — SDP is shown on the token bar.
+5. Drag weapons and ammo into trunk inventory, then mount eligible weapons in the **Mounted Weapons** section.
+6. Use mounted weapon controls to switch fire modes, manage ammo, and roll attack/damage.
+7. Place the vehicle token on a scene — SDP is shown on the token bar.
 
 ## License
 

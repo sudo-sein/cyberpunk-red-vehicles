@@ -233,6 +233,19 @@
   white-space: nowrap;
 }
 
+.cyberpunk-red-vehicles.vehicle-sheet .trunk-item-amount {
+  width: 3.25rem;
+  text-align: center;
+  background-color: var(--cpr-background-box, #eaeaea);
+  border: 1px solid var(--cpr-color-medium-grey, #666);
+  color: var(--cpr-text-normal, #222);
+  font-family: var(--cpr-font-primary, "Jost", sans-serif);
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .trunk-item-amount[readonly] {
+  opacity: 0.85;
+}
+
 .cyberpunk-red-vehicles.vehicle-sheet .item-edit,
 .cyberpunk-red-vehicles.vehicle-sheet .item-delete {
   cursor: pointer;
@@ -287,4 +300,26 @@
 .cyberpunk-red-vehicles.configure-dialog select {
   width: 100%;
   padding: 0.25rem;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-weapon-install,
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-weapon-uninstall,
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-weapon-action,
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-weapon-roll,
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-weapon-fire {
+  cursor: pointer;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .weapon-content {
+  margin: 0.15rem 0;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .weapon-actions {
+  align-content: center;
+}
+
+.cyberpunk-red-vehicles.vehicle-sheet .weapon-actions .vehicle-weapon-uninstall {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.2rem;
 }

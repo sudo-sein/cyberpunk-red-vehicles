@@ -1,12 +1,22 @@
+import CPRChat from "../../../systems/cyberpunk-red-core/modules/chat/cpr-chat.js";
+import {
+  chooseMountTypeForWeapon,
+  getVehicleWeaponState,
+  isVehicleWeaponItem,
+  partitionVehicleWeapons,
+} from "./vehicle-weapon-handling.js";
+
 const DAMAGE_CARD_TEMPLATE = `systems/cyberpunk-red-core/templates/chat/cpr-damage-application-card.hbs`;
 const DEFAULT_VEHICLE_IMG = "systems/cyberpunk-red-core/icons/compendium/default/Default_Vehicle.svg";
 const MODULE_ID = "cyberpunk-red-vehicles";
+const CORE_SYSTEM_ID = "cyberpunk-red-core";
 const INSTALLED_FLAG = "installed";
 const BASE_STATS_FLAG = "baseStats";
 const MIGRATION_VERSION_FLAG = "upgradeInstallStateMigrationVersion";
 const UPGRADE_INSTALL_MIGRATION_VERSION = 1;
 const ARMORED_CHASSIS = "Armored Chassis";
 const ARMORED_CHASSIS_SP = 13;
+const VEHICLE_WEAPON_FLAG = "vehicleWeapon";
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -76,6 +86,14 @@ export default class CPRVehicleActor extends Actor {
 
   _isVehicleUpgrade(item) {
     return item?.type === "itemUpgrade" && item.system?.type === "vehicle";
+  }
+
+  getOwnedItem(itemId) {
+    return this.items.find((item) => item._id === itemId || item.uuid === itemId);
+  }
+
+  getMultipleOwnedItems(itemIds) {
+    return itemIds.map((id) => this.getOwnedItem(id));
   }
 
   _isVehicleUpgradeInstalled(item) {
@@ -327,6 +345,273 @@ export default class CPRVehicleActor extends Actor {
     if (item.type !== "itemUpgrade") return false;
     const originalName = item.flags?.babele?.originalName ?? item.name;
     return item.name === ARMORED_CHASSIS || originalName === ARMORED_CHASSIS;
+  }
+
+  _getVehicleWeaponFlagPath() {
+    return `flags.${MODULE_ID}.${VEHICLE_WEAPON_FLAG}`;
+  }
+
+  _getVehicleWeaponState(item) {
+    return getVehicleWeaponState(item, MODULE_ID);
+  }
+
+  isVehicleWeaponMounted(item) {
+    if (!isVehicleWeaponItem(item)) return false;
+    return this._getVehicleWeaponState(item).installed;
+  }
+
+  _getMountedWeaponItem(itemId) {
+    const item = this.items.get(itemId);
+    if (!isVehicleWeaponItem(item)) return null;
+    return this.isVehicleWeaponMounted(item) ? item : null;
+  }
+
+  async installVehicleWeapon(itemId) {
+    const weapon = this.items.get(itemId);
+    if (!isVehicleWeaponItem(weapon)) {
+      return { ok: false, reason: "weaponNotSupported" };
+    }
+
+    if (this._getVehicleWeaponState(weapon).installed) {
+      return { ok: false, reason: "alreadyInstalled" };
+    }
+
+    const choice = chooseMountTypeForWeapon(this, weapon, MODULE_ID);
+    if (!choice.ok) return choice;
+
+    await weapon.update({
+      [this._getVehicleWeaponFlagPath()]: {
+        installed: true,
+        mountType: choice.mountType,
+      },
+    });
+
+    return { ok: true, mountType: choice.mountType };
+  }
+
+  async uninstallVehicleWeapon(itemId) {
+    const weapon = this.items.get(itemId);
+    if (!isVehicleWeaponItem(weapon)) {
+      return { ok: false, reason: "weaponNotSupported" };
+    }
+
+    if (!this._getVehicleWeaponState(weapon).installed) {
+      return { ok: false, reason: "notInstalled" };
+    }
+
+    await weapon.update({
+      [this._getVehicleWeaponFlagPath()]: {
+        installed: false,
+        mountType: null,
+      },
+    });
+
+    return { ok: true };
+  }
+
+  _getWeaponFireMode(itemId) {
+    return this.getFlag(CORE_SYSTEM_ID, `firetype-${itemId}`) ?? "attack";
+  }
+
+  async toggleVehicleWeaponFireMode(itemId, fireMode) {
+    const weapon = this._getMountedWeaponItem(itemId);
+    if (!weapon) return { ok: false, reason: "notInstalled" };
+
+    const flagName = `firetype-${itemId}`;
+    const current = this.getFlag(CORE_SYSTEM_ID, flagName);
+    if (current === fireMode) {
+      await this.unsetFlag(CORE_SYSTEM_ID, flagName);
+    } else {
+      await this.setFlag(CORE_SYSTEM_ID, flagName, fireMode);
+    }
+    return { ok: true };
+  }
+
+  async applyVehicleWeaponAction(itemId, actionType) {
+    const weapon = this._getMountedWeaponItem(itemId);
+    if (!weapon) return { ok: false, reason: "notInstalled" };
+
+    if (actionType === "change-ammo") {
+      if (typeof weapon.load === "function") {
+        await weapon.load();
+        return { ok: true };
+      }
+      return { ok: false, reason: "actionNotSupported" };
+    }
+
+    if (actionType === "reload") {
+      if (typeof weapon.reload === "function") {
+        await weapon.reload();
+        return { ok: true };
+      }
+      return { ok: false, reason: "actionNotSupported" };
+    }
+
+    return { ok: false, reason: "actionNotSupported" };
+  }
+
+  _getSelectableAttackActors() {
+    return game.actors
+      .filter((actor) => actor.testUserPermission(game.user, "OWNER"))
+      .filter((actor) => ["character", "mook"].includes(actor.type));
+  }
+
+  async _promptAttackActorSelection() {
+    const candidates = this._getSelectableAttackActors();
+    if (candidates.length === 0) return null;
+
+    const options = candidates
+      .map((actor) => `<option value="${actor.id}">${actor.name}</option>`)
+      .join("");
+    const content = `
+      <form>
+        <div class="form-group">
+          <label>${game.i18n.localize("CPRVEHICLES.Dialog.ActorPicker.Label")}</label>
+          <select name="actorId">${options}</select>
+        </div>
+      </form>
+    `;
+
+    return new Promise((resolve) => {
+      new Dialog({
+        title: game.i18n.localize("CPRVEHICLES.Dialog.ActorPicker.Title"),
+        content,
+        buttons: {
+          confirm: {
+            label: game.i18n.localize("CPRVEHICLES.Dialog.ActorPicker.Confirm"),
+            callback: (html) => {
+              const actorId = html.find("select[name='actorId']").val();
+              resolve(game.actors.get(actorId) ?? null);
+            },
+          },
+          cancel: {
+            label: game.i18n.localize("CPRVEHICLES.Dialog.ActorPicker.Cancel"),
+            callback: () => resolve(null),
+          },
+        },
+        default: "confirm",
+        close: () => resolve(null),
+      }).render(true);
+    });
+  }
+
+  async _resolveVehicleAttackActor() {
+    if (game.user.character) return game.user.character;
+    return this._promptAttackActorSelection();
+  }
+
+  _createActorIndependentDamageProxy() {
+    return {
+      itemTypes: { role: [] },
+      allApplicableEffects: () => [],
+      getFlag: () => null,
+      setFlag: async () => {},
+      unsetFlag: async () => {},
+      getStat: () => 0,
+      getSkillLevel: () => 0,
+      getArmorPenaltyMods: () => 0,
+      getWoundStateMods: () => 0,
+    };
+  }
+
+  async _rollAndSendToChat(cprRoll, actorForCard, item, event, entityActor = this) {
+    const keepRolling = await cprRoll.handleRollDialog(event ?? {}, actorForCard, item);
+    if (!keepRolling) return { ok: false, reason: "rollCancelled" };
+
+    if (item) {
+      cprRoll = await item.confirmRoll(cprRoll);
+    }
+
+    await cprRoll.roll();
+    cprRoll.entityData = {
+      actor: entityActor?.id ?? actorForCard?.id ?? this.id,
+      token: null,
+      tokens: [],
+      item: item?.id,
+    };
+    CPRChat.RenderRollCard(cprRoll);
+    return { ok: true };
+  }
+
+  async rollVehicleWeaponAttack(itemId, eventContext = {}) {
+    const weapon = this._getMountedWeaponItem(itemId);
+    if (!weapon) return { ok: false, reason: "notInstalled" };
+
+    const attackActor = await this._resolveVehicleAttackActor();
+    if (!attackActor) return { ok: false, reason: "actorSelectionCancelled" };
+
+    const fireMode = this._getWeaponFireMode(itemId);
+    const cprRoll = weapon.createRoll(fireMode, attackActor);
+    if (!cprRoll) return { ok: false, reason: "rollUnavailable" };
+
+    return this._rollAndSendToChat(
+      cprRoll,
+      attackActor,
+      weapon,
+      eventContext.event,
+      this
+    );
+  }
+
+  async rollVehicleWeaponDamage(itemId, eventContext = {}) {
+    const weapon = this._getMountedWeaponItem(itemId);
+    if (!weapon) return { ok: false, reason: "notInstalled" };
+
+    const fireMode = this._getWeaponFireMode(itemId);
+    if (fireMode === "suppressive") {
+      return { ok: false, reason: "damageNotAvailableForSuppressive" };
+    }
+
+    const damageType = fireMode === "aimed" ? "aimed" : fireMode;
+    const proxyActor = this._createActorIndependentDamageProxy();
+    const cprRoll = weapon.createRoll("damage", proxyActor, { damageType });
+    if (!cprRoll) return { ok: false, reason: "rollUnavailable" };
+
+    return this._rollAndSendToChat(cprRoll, this, weapon, eventContext.event);
+  }
+
+  _getVehicleWeaponAmmoLabel(weapon) {
+    if (!weapon.system?.isRanged) {
+      return game.i18n.localize("CPR.global.itemType.skill.meleeWeapon");
+    }
+
+    if (!weapon.system?.hasAmmoLoaded) {
+      return game.i18n.localize("CPR.mookSheet.items.unloaded");
+    }
+
+    const ammoType = weapon.system?.loadedAmmo?.system?.type;
+    const ammoLabel = ammoType
+      ? game.i18n.localize(`CPR.global.ammo.type.${ammoType}`)
+      : game.i18n.localize("CPRVEHICLES.Fields.Ammo");
+    return `${ammoLabel}: ${weapon.system.magazine.value}/${weapon.system.magazine.max}`;
+  }
+
+  _toVehicleWeaponSheetData(weapon) {
+    const fireMode = this._getWeaponFireMode(weapon.id);
+    return {
+      id: weapon.id,
+      img: weapon.img,
+      name: weapon.name,
+      ammoLabel: this._getVehicleWeaponAmmoLabel(weapon),
+      isRanged: weapon.system?.isRanged === true,
+      rof: weapon.system?.rof ?? 1,
+      damage: weapon.getWeaponDamage?.() ?? weapon.system?.damage ?? "-",
+      supportsAutofire: Number(weapon.system?.fireModes?.autoFire ?? 0) > 0,
+      autofireMax: Number(weapon.system?.fireModes?.autoFire ?? 0),
+      supportsSuppressive: weapon.system?.fireModes?.suppressiveFire === true,
+      fireModeAimed: fireMode === "aimed",
+      fireModeAutofire: fireMode === "autofire",
+      fireModeSuppressive: fireMode === "suppressive",
+      canRollDamage: fireMode !== "suppressive",
+    };
+  }
+
+  getVehicleWeaponsForSheet() {
+    const buckets = partitionVehicleWeapons(this, MODULE_ID);
+    return {
+      mounted: buckets.mounted.map((weapon) => this._toVehicleWeaponSheetData(weapon)),
+      cargo: buckets.cargo.map((weapon) => this._toVehicleWeaponSheetData(weapon)),
+    };
   }
 
   async _applyDamage(
