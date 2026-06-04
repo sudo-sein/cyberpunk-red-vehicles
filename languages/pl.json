@@ -28,6 +28,8 @@
   "CPRVEHICLES.Actions.ChangeAmmo": "Zmień amunicję",
   "CPRVEHICLES.Actions.Reload": "Przeładuj",
 
+  "CPRVEHICLES.WeaponMount.generic": "Mocowanie",
+
   "CPRVEHICLES.Dialog.ConfigureFromItem.Title": "Konfiguruj pojazd z przedmiotu",
   "CPRVEHICLES.Dialog.ConfigureFromItem.Prompt": "Wybierz przedmiot pojazdu, z którego skopiować statystyki:",
   "CPRVEHICLES.Dialog.ConfigureFromItem.Apply": "Zastosuj",
@@ -48,8 +50,6 @@
   "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Do pojazdu można dodać tylko ulepszenia pojazdów.",
   "CPRVEHICLES.Notifications.UpgradeAlreadyInstalled": "Nie można zainstalować {itemName}, bo {conflictName} z tej samej paczki źródłowej jest już zainstalowany.",
   "CPRVEHICLES.Notifications.DamageReversed": "Cofnięto {damage} obrażeń dla {name}.",
-  "CPRVEHICLES.Notifications.WeaponMissingUpgrade": "Ta broń wymaga zgodnego, zainstalowanego ulepszenia pojazdu.",
-  "CPRVEHICLES.Notifications.WeaponMountOccupied": "Wszystkie zgodne sloty montażowe są zajęte.",
   "CPRVEHICLES.Notifications.WeaponNotSupported": "Ta broń nie może być zamontowana w tym pojeździe.",
   "CPRVEHICLES.Notifications.WeaponAlreadyInstalled": "Ta broń jest już zamontowana.",
   "CPRVEHICLES.Notifications.WeaponNotInstalled": "Najpierw zamontuj tę broń.",

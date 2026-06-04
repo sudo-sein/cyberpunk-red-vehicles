@@ -28,6 +28,8 @@
   "CPRVEHICLES.Actions.ChangeAmmo": "Change Ammo",
   "CPRVEHICLES.Actions.Reload": "Reload",
 
+  "CPRVEHICLES.WeaponMount.generic": "Mount",
+
   "CPRVEHICLES.Dialog.ConfigureFromItem.Title": "Configure Vehicle from Item",
   "CPRVEHICLES.Dialog.ConfigureFromItem.Prompt": "Select a vehicle item to copy stats from:",
   "CPRVEHICLES.Dialog.ConfigureFromItem.Apply": "Apply",
@@ -48,8 +50,6 @@
   "CPRVEHICLES.Notifications.OnlyVehicleUpgrades": "Only vehicle upgrades can be added to a vehicle.",
   "CPRVEHICLES.Notifications.UpgradeAlreadyInstalled": "{itemName} cannot be installed because {conflictName} from the same source pack is already installed.",
   "CPRVEHICLES.Notifications.DamageReversed": "Reversed {damage} damage to {name}.",
-  "CPRVEHICLES.Notifications.WeaponMissingUpgrade": "This weapon needs a compatible installed vehicle upgrade.",
-  "CPRVEHICLES.Notifications.WeaponMountOccupied": "All compatible weapon mounts are occupied.",
   "CPRVEHICLES.Notifications.WeaponNotSupported": "This weapon cannot be mounted on this vehicle.",
   "CPRVEHICLES.Notifications.WeaponAlreadyInstalled": "This weapon is already mounted.",
   "CPRVEHICLES.Notifications.WeaponNotInstalled": "This weapon must be mounted first.",

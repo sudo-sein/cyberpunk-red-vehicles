@@ -1,11 +1,16 @@
 import CPRChat from "../../../systems/cyberpunk-red-core/modules/chat/cpr-chat.js";
+import CPRActor from "../../../systems/cyberpunk-red-core/modules/actor/cpr-actor.js";
 import {
-  chooseMountTypeForWeapon,
+  deriveWeaponMountLabel,
   getVehicleWeaponState,
   isVehicleWeaponItem,
   partitionVehicleWeapons,
 } from "./vehicle-weapon-handling.js";
 import { computeVehicleBaseStatsFromCurrent } from "./vehicle-upgrade-stats.mjs";
+
+// Foundry's base Actor class (CPRActor extends it). Used to bypass
+// CPRActor.create(), which auto-injects core skills/cyberware on new actors.
+const BaseActor = Object.getPrototypeOf(CPRActor);
 
 const DAMAGE_CARD_TEMPLATE = `systems/cyberpunk-red-core/templates/chat/cpr-damage-application-card.hbs`;
 const DEFAULT_VEHICLE_IMG = "systems/cyberpunk-red-core/icons/compendium/default/Default_Vehicle.svg";
@@ -23,7 +28,7 @@ function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
-export default class CPRVehicleActor extends Actor {
+export default class CPRVehicleActor extends CPRActor {
   static async create(data, options = {}) {
     const createData = foundry.utils.deepClone(data);
     if (!createData.img) createData.img = DEFAULT_VEHICLE_IMG;
@@ -38,7 +43,7 @@ export default class CPRVehicleActor extends Actor {
       bar1: { attribute: "sdp" },
       texture: { src: DEFAULT_VEHICLE_IMG },
     }, { overwrite: false });
-    return super.create(createData, options);
+    return BaseActor.create(createData, options);
   }
 
   prepareDerivedData() {
@@ -49,6 +54,24 @@ export default class CPRVehicleActor extends Actor {
       if (pool.value > pool.max) pool.value = pool.max;
       if (pool.value < 0) pool.value = 0;
     }
+  }
+
+  // CPRActor.prepareData() calls loadMixins() (container mixin assumes
+  // system.installedItems) and _calculateDerivedStats() (reads system.stats
+  // and system.derivedStats). The vehicle schema has none of these, so both
+  // are no-ops.
+  loadMixins() {}
+
+  _calculateDerivedStats() {}
+
+  // The vehicle has no stats/derivedStats. These are invoked when the vehicle
+  // acts as the actor for a weapon damage roll; return neutral values.
+  getStat(_statName) {
+    return 0;
+  }
+
+  getWoundStateMods() {
+    return 0;
   }
 
   _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
@@ -87,14 +110,6 @@ export default class CPRVehicleActor extends Actor {
 
   _isVehicleUpgrade(item) {
     return item?.type === "itemUpgrade" && item.system?.type === "vehicle";
-  }
-
-  getOwnedItem(itemId) {
-    return this.items.find((item) => item._id === itemId || item.uuid === itemId);
-  }
-
-  getMultipleOwnedItems(itemIds) {
-    return itemIds.map((id) => this.getOwnedItem(id));
   }
 
   _isVehicleUpgradeInstalled(item) {
@@ -378,17 +393,16 @@ export default class CPRVehicleActor extends Actor {
       return { ok: false, reason: "alreadyInstalled" };
     }
 
-    const choice = chooseMountTypeForWeapon(this, weapon, MODULE_ID);
-    if (!choice.ok) return choice;
+    const mountType = deriveWeaponMountLabel(weapon);
 
     await weapon.update({
       [this._getVehicleWeaponFlagPath()]: {
         installed: true,
-        mountType: choice.mountType,
+        mountType,
       },
     });
 
-    return { ok: true, mountType: choice.mountType };
+    return { ok: true, mountType };
   }
 
   async uninstallVehicleWeapon(itemId) {
@@ -502,20 +516,6 @@ export default class CPRVehicleActor extends Actor {
     return this._promptAttackActorSelection();
   }
 
-  _createActorIndependentDamageProxy() {
-    return {
-      itemTypes: { role: [] },
-      allApplicableEffects: () => [],
-      getFlag: () => null,
-      setFlag: async () => {},
-      unsetFlag: async () => {},
-      getStat: () => 0,
-      getSkillLevel: () => 0,
-      getArmorPenaltyMods: () => 0,
-      getWoundStateMods: () => 0,
-    };
-  }
-
   async _rollAndSendToChat(cprRoll, actorForCard, item, event, entityActor = this) {
     const keepRolling = await cprRoll.handleRollDialog(event ?? {}, actorForCard, item);
     if (!keepRolling) return { ok: false, reason: "rollCancelled" };
@@ -565,8 +565,7 @@ export default class CPRVehicleActor extends Actor {
     }
 
     const damageType = fireMode === "aimed" ? "aimed" : fireMode;
-    const proxyActor = this._createActorIndependentDamageProxy();
-    const cprRoll = weapon.createRoll("damage", proxyActor, { damageType });
+    const cprRoll = weapon.createRoll("damage", this, { damageType });
     if (!cprRoll) return { ok: false, reason: "rollUnavailable" };
 
     return this._rollAndSendToChat(cprRoll, this, weapon, eventContext.event);
