@@ -204,8 +204,6 @@ export default class CPRVehicleSheet extends ActorSheet {
     if (!result || result.ok !== false) return;
 
     const keyMap = {
-      missingUpgrade: "CPRVEHICLES.Notifications.WeaponMissingUpgrade",
-      slotOccupied: "CPRVEHICLES.Notifications.WeaponMountOccupied",
       weaponNotSupported: "CPRVEHICLES.Notifications.WeaponNotSupported",
       alreadyInstalled: "CPRVEHICLES.Notifications.WeaponAlreadyInstalled",
       notInstalled: "CPRVEHICLES.Notifications.WeaponNotInstalled",

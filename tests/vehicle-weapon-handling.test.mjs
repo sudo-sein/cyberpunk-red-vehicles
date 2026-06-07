@@ -2,11 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
-  chooseMountTypeForWeapon,
+  deriveWeaponMountLabel,
   getWeaponAllowedMounts,
 } from "../scripts/vehicle-weapon-handling.js";
-
-const MODULE_ID = "cyberpunk-red-vehicles";
 
 function weapon({ name, weaponType, weaponSkill = "" }) {
   return {
@@ -17,59 +15,48 @@ function weapon({ name, weaponType, weaponSkill = "" }) {
   };
 }
 
-function upgrade(name) {
-  return {
-    type: "itemUpgrade",
-    name,
-    system: { type: "vehicle" },
-  };
-}
-
-function actorWithInstalledUpgrades(upgrades) {
-  return {
-    items: upgrades,
-    isVehicleUpgradeInstalled: () => true,
-  };
-}
-
-test("allows core Flamethrower item on a flamethrower mount", () => {
-  const coreFlamethrower = weapon({
-    name: "Flamethrower",
-    weaponType: "shotgun",
-    weaponSkill: "Heavy Weapons",
-  });
-
+test("derives machineGun label for assault rifles", () => {
   assert.equal(
-    chooseMountTypeForWeapon(
-      actorWithInstalledUpgrades([upgrade("Onboard Flamethrower")]),
-      coreFlamethrower,
-      MODULE_ID
-    ).mountType,
+    deriveWeaponMountLabel(weapon({ name: "AR", weaponType: "assaultRifle" })),
+    "machineGun"
+  );
+});
+
+test("derives rocketPod label (preferred over heavyMount) for rocket launchers", () => {
+  assert.equal(
+    deriveWeaponMountLabel(
+      weapon({ name: "RL", weaponType: "rocketLauncher" })
+    ),
+    "rocketPod"
+  );
+});
+
+test("derives flamethrower label for a Flamethrower by name", () => {
+  assert.equal(
+    deriveWeaponMountLabel(
+      weapon({ name: "Flamethrower", weaponType: "shotgun", weaponSkill: "Heavy Weapons" })
+    ),
     "flamethrower"
   );
 });
 
-test("prefers flamethrower mount over generic heavy mount for Flamethrowers", () => {
-  const coreFlamethrower = weapon({
-    name: "Flamethrower",
-    weaponType: "shotgun",
-    weaponSkill: "Heavy Weapons",
-  });
-
+test("derives heavyMount label for grenade launchers", () => {
   assert.equal(
-    chooseMountTypeForWeapon(
-      actorWithInstalledUpgrades([
-        upgrade("Vehicle Heavy Weapon Mount"),
-        upgrade("Onboard Flamethrower"),
-      ]),
-      coreFlamethrower,
-      MODULE_ID
-    ).mountType,
-    "flamethrower"
+    deriveWeaponMountLabel(
+      weapon({ name: "GL", weaponType: "grenadeLauncher" })
+    ),
+    "heavyMount"
   );
 });
 
-test("allows core melee weapon types on melee mounts", () => {
+test("derives generic label for weapons with no mount category (pistols)", () => {
+  assert.equal(
+    deriveWeaponMountLabel(weapon({ name: "Pistol", weaponType: "pistol" })),
+    "generic"
+  );
+});
+
+test("still maps core melee weapon types to a melee mount", () => {
   for (const weaponType of ["lightMelee", "medMelee", "heavyMelee", "vHeavyMelee"]) {
     assert.deepEqual(
       getWeaponAllowedMounts(weapon({ name: weaponType, weaponType })),
