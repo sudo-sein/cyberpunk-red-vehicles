@@ -98,14 +98,14 @@
 .cyberpunk-red-vehicles.vehicle-sheet .sdp-bar-track {
   flex: 1;
   height: 1.31em;
-  background-color: var(--cpr-background-box);
+  background-color: var(--cpr-background-box, #eaeaea);
   clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 100%, 1rem 100%);
   overflow: hidden;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .sdp-bar-fill {
   height: 100%;
-  background-color: var(--cpr-text-header, #0d0b0c);
+  background-color: var(--cpr-background-header, #0d0b0c);
   clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 100%, 1rem 100%);
   transition: width 0.3s ease;
 }
@@ -134,7 +134,6 @@
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-stats {
   display: grid;
   gap: 0.313rem;
-  margin-bottom: 0.5rem;
   grid-auto-flow: column;
   padding: 0.15rem;
 }
@@ -192,15 +191,14 @@
 /* Items Section */
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-items {
   background-color: var(--cpr-background-box, #eaeaea);
-  margin-bottom: 0.5rem;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .items-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--cpr-background-header, #0d0b0c);
-  color: var(--cpr-text-header, #eaeaea);
+  background-color: var(--cpr-background-tab-active, #b90202);
+  color: var(--cpr-text-tab-normal, #eaeaea);
   padding: 0.15rem 0.5rem;
 }
 
@@ -214,7 +212,8 @@
   font-size: var(--cpr-font-small, 0.9rem);
   text-transform: capitalize;
   padding: 0.1rem 0.5rem;
-  background-color: var(--cpr-background-cyberdeck-section-header, #ffc3b6);
+  background-color: var(--cpr-background-header, #0d0b0c);
+  color: var(--cpr-text-header, #eaeaea);
   margin: 0;
   border: none;
 }
@@ -287,8 +286,8 @@
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-notes h3 {
-  background-color: var(--cpr-background-header, #0d0b0c);
-  color: var(--cpr-text-header, #eaeaea);
+  background-color: var(--cpr-background-tab-active, #b90202);
+  color: var(--cpr-text-tab-normal, #eaeaea);
   padding: 0.15rem 0.5rem;
   margin: 0;
   font-size: var(--cpr-font-normal, 1rem);
