@@ -1,8 +1,9 @@
 <form class="{{cssClass}}" autocomplete="off">
-  <section class="vehicle-header">
+  <div class="vehicle-content">
+    <section class="vehicle-header">
     <img class="vehicle-image" src="{{actor.img}}" title="{{actor.name}}" />
     <div class="vehicle-header-fields">
-      <input class="vehicle-name" name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'CPRVEHICLES.Fields.Name'}}" {{#unless editable}}disabled{{/unless}} />
+      <input class="vehicle-name text-hero text-semi text-large" name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'CPRVEHICLES.Fields.Name'}}" {{#unless editable}}disabled{{/unless}} />
       <div class="vehicle-type-row">
         <label>{{localize "CPRVEHICLES.Fields.VehicleType"}}</label>
         <select name="system.vehicleType" {{#unless editable}}disabled{{/unless}}>
@@ -10,227 +11,227 @@
             <option value="{{key}}" {{#if (eq key ../system.vehicleType)}}selected{{/if}}>{{label}}</option>
           {{/each}}
         </select>
-      </div>
-      {{#if editable}}
-      <button type="button" class="configure-from-item">
-        <i class="fas fa-wrench"></i> {{localize "CPRVEHICLES.Actions.ConfigureFromItem"}}
-      </button>
-      {{/if}}
-    </div>
-  </section>
-
-  <section class="vehicle-sdp">
-    <label>{{localize "CPRVEHICLES.Fields.SDP"}}</label>
-    <div class="sdp-bar-track">
-      <div class="sdp-bar-fill" style="width: {{sdpPercent}}%"></div>
-    </div>
-    <div class="sdp-values">
-      <input type="number" name="system.sdp.value" value="{{system.sdp.value}}" min="0" max="{{system.sdp.max}}" {{#unless editable}}disabled{{/unless}} />
-      <span class="sdp-separator">/</span>
-      <input type="number" name="system.sdp.max" value="{{system.sdp.max}}" min="1" {{#unless editable}}disabled{{/unless}} />
-    </div>
-  </section>
-
-  <section class="vehicle-stats">
-    <div class="stat-field">
-      <label>{{localize "CPRVEHICLES.Fields.SP"}}</label>
-      <div class="stat-value-max">
-        <input type="number" name="system.sp.value" value="{{system.sp.value}}" min="0" max="{{system.sp.max}}" {{#unless editable}}disabled{{/unless}} />
-        <span class="sdp-separator">/</span>
-        <input type="number" name="system.sp.max" value="{{system.sp.max}}" min="0" {{#unless editable}}disabled{{/unless}} />
+        {{#if editable}}
+          <button type="button" class="configure-from-item">
+          <i class="fas fa-wrench"></i> {{localize "CPRVEHICLES.Actions.ConfigureFromItem"}}
+          </button>
+        {{/if}}
       </div>
     </div>
-    <div class="stat-field">
-      <label>{{localize "CPRVEHICLES.Fields.Seats"}}</label>
-      <input type="number" name="system.seats" value="{{system.seats}}" min="0" {{#unless editable}}disabled{{/unless}} />
-    </div>
-    <div class="stat-field">
-      <label>{{localize "CPRVEHICLES.Fields.SpeedCombat"}}</label>
-      <div class="stat-with-unit">
-        <input type="number" name="system.speedCombat" value="{{system.speedCombat}}" min="0" {{#unless editable}}disabled{{/unless}} />
-        <span class="stat-unit">m/rnd</span>
+    </section>
+  
+    <section class="vehicle-sdp">
+      <div class="sdp-bar-track">
+        <div class="sdp-bar-fill" style="width: {{sdpPercent}}%"></div>
       </div>
-    </div>
-    <div class="stat-field">
-      <label>{{localize "CPRVEHICLES.Fields.SpeedNarrative"}}</label>
-      <input type="text" name="system.speedNarrative" value="{{system.speedNarrative}}" {{#unless editable}}disabled{{/unless}} />
-    </div>
-  </section>
-
-  <section class="vehicle-items">
-    <div class="items-header">
-      <h3>{{localize "CPRVEHICLES.Fields.MountedWeapons"}}</h3>
-    </div>
-    {{#if hasMountedWeapons}}
-      <div class="weapon-content">
-        {{#each mountedWeapons}}
-          <div class="item weapon-grid" data-item-id="{{id}}">
-            <div class="weapon-image">
-              <img alt="{{name}}" src="{{img}}"/>
-            </div>
-
-            <div class="weapon-name">
-              <a class="name item-edit" data-item-id="{{id}}">{{name}}</a>
-            </div>
-
-            <div class="weapon-ammo">
-              {{ammoLabel}}
-            </div>
-
-            <div class="weapon-info">
-              <span class="text-pill">{{localize "CPR.itemSheet.weapon.rof"}} {{rof}}</span>
-              <span class="text-pill">{{localize "CPR.global.generic.damage"}} {{damage}}</span>
-            </div>
-
-            <div class="weapon-mode text-padding-sides-small">
-              <ul>
-                <li>
-                  <span class="text-padding-sides-small">{{localize "CPR.actorSheets.fireModes.aim"}}</span>
-                  <a class="fire-checkbox vehicle-weapon-fire" data-fire-mode="aimed" data-item-id="{{id}}">
-                    {{#if fireModeAimed}}
-                      <i class="far fa-circle-dot text-padding-right-smallest"></i>
-                    {{else}}
-                      <i class="far fa-circle text-padding-right-smallest"></i>
-                    {{/if}}
-                  </a>
-                </li>
-                {{#if supportsAutofire}}
-                  <li>
-                    <span class="text-padding-right-small">{{localize "CPR.actorSheets.fireModes.autoFire"}} ({{autofireMax}})</span>
-                    <a class="fire-checkbox vehicle-weapon-fire" data-fire-mode="autofire" data-item-id="{{id}}">
-                      {{#if fireModeAutofire}}
-                        <i class="far fa-circle-dot text-padding-right-smallest"></i>
-                      {{else}}
-                        <i class="far fa-circle text-padding-right-smallest"></i>
-                      {{/if}}
-                    </a>
-                  </li>
-                {{/if}}
-                {{#if supportsSuppressive}}
-                  <li>
-                    <span class="text-padding-right-small">{{localize "CPR.actorSheets.fireModes.suppressiveFireShort"}}</span>
-                    <a class="fire-checkbox vehicle-weapon-fire" data-fire-mode="suppressive" data-item-id="{{id}}">
-                      {{#if fireModeSuppressive}}
-                        <i class="far fa-circle-dot text-padding-right-smallest"></i>
-                      {{else}}
-                        <i class="far fa-circle text-padding-right-smallest"></i>
-                      {{/if}}
-                    </a>
-                  </li>
-                {{/if}}
-              </ul>
-            </div>
-
-            <div class="weapon-actions">
-              {{#if isRanged}}
-                <ul class="items-list">
-                  <li class="text-padding-sides-smaller">
-                    <a class="item-action vehicle-weapon-action" data-action-type="change-ammo" data-item-id="{{id}}">
-                      <i class="fas fa-arrow-right-arrow-left" data-tooltip="{{localize 'CPR.actorSheets.commonActions.changeAmmo'}}"></i>
-                    </a>
-                  </li>
-                  <li class="text-padding-sides-smaller">
-                    <a class="item-action vehicle-weapon-action" data-action-type="reload" data-item-id="{{id}}">
-                      <i class="fas fa-rotate-right" data-tooltip="{{localize 'CPR.actorSheets.commonActions.reload'}}"></i>
-                    </a>
-                  </li>
-                </ul>
-              {{/if}}
-              <a class="vehicle-weapon-uninstall" title="{{localize 'CPRVEHICLES.Actions.UnmountWeapon'}}">
-                <i class="fas fa-eject"></i>
-              </a>
-            </div>
-
-            <div class="weapon-attack text-largest">
-              <a class="rollable vehicle-weapon-roll" data-roll-type="attack" data-item-id="{{id}}">
-                <i class="fas fa-hand-fist red-fg" data-tooltip="{{localize 'CPR.characterSheet.bottomPane.fight.rollAnAttack'}}"></i>
-              </a>
-            </div>
-
-            <div class="weapon-damage text-largest">
-              {{#if canRollDamage}}
-                <a class="rollable vehicle-weapon-roll" data-roll-type="damage" data-item-id="{{id}}">
-                  <i class="fas fa-droplet red-fg" data-tooltip="{{localize 'CPR.actorSheets.commonActions.rollDamage'}}"></i>
-                </a>
-              {{/if}}
-            </div>
-          </div>
-        {{/each}}
-      </div>
-    {{else}}
-      <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
-    {{/if}}
-  </section>
-
-  <section class="vehicle-items">
-    <div class="items-header">
-      <h3>{{localize "CPRVEHICLES.Fields.InstalledUpgrades"}}</h3>
-    </div>
-    {{#if hasInstalledVehicleUpgrades}}
-      {{#each installedVehicleUpgrades}}
-        <div class="item-row" data-item-id="{{this.id}}">
-          <img class="item-img" src="{{this.img}}" width="24" height="24" />
-          <span class="item-name">{{this.name}}</span>
-          {{#if @root.editable}}
-            <a class="item-toggle-install" data-install="false" title="{{localize 'CPRVEHICLES.Actions.UninstallUpgrade'}}">
-              <i class="fas fa-eject"></i>
-            </a>
-            <a class="item-edit" title="Edit"><i class="fas fa-edit"></i></a>
-            <a class="item-delete" title="Delete"><i class="fas fa-trash"></i></a>
-          {{/if}}
+    </section>
+  
+    <section class="vehicle-stats">
+      <div class="stat-field actor-stats-title text-semi">
+        <label>{{localize "CPRVEHICLES.Fields.SDP"}}</label>
+        <div class="sdp-values">
+          <input type="number" name="system.sdp.value" value="{{system.sdp.value}}" min="0" max="{{system.sdp.max}}" {{#unless editable}}disabled{{/unless}} />
+          <span class="sdp-separator">/</span>
+          <input type="number" name="system.sdp.max" value="{{system.sdp.max}}" min="1" {{#unless editable}}disabled{{/unless}} />
         </div>
-      {{/each}}
-    {{else}}
-      <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
-    {{/if}}
-  </section>
-
-  <section class="vehicle-items">
-    <div class="items-header">
-      <h3>{{localize "CPRVEHICLES.Fields.Trunk"}}</h3>
-    </div>
-    {{#if hasStoredItems}}
-      {{#each storedItemsByType as |items type|}}
-        <div class="item-type-group">
-          <h4 class="item-type-label">{{lookup @root.typeLabels type}}</h4>
-          {{#each items}}
-            <div class="item-row" data-item-id="{{this.id}}">
-              <img class="item-img" src="{{this.img}}" width="24" height="24" />
-              <span class="item-name">{{this.name}}</span>
-              <input
-                class="trunk-item-amount"
-                type="number"
-                min="0"
-                step="1"
-                value="{{this.amount}}"
-                {{#unless this.canEditAmount}}readonly{{/unless}}
-                {{#unless @root.editable}}disabled{{/unless}}
-              />
-              {{#if @root.editable}}
-                {{#if this.canToggleInstall}}
-                  <a class="item-toggle-install" data-install="true" title="{{localize 'CPRVEHICLES.Actions.InstallUpgrade'}}">
-                    <i class="fas fa-plug"></i>
-                  </a>
-                {{else if (eq this.type "weapon")}}
-                  <a class="vehicle-weapon-install" title="{{localize 'CPRVEHICLES.Actions.InstallWeapon'}}">
-                    <i class="fas fa-plug"></i>
+      </div>
+      <div class="stat-field actor-stats-title text-semi">
+        <label>{{localize "CPRVEHICLES.Fields.SP"}}</label>
+        <div class="stat-value-max">
+          <input type="number" name="system.sp.value" value="{{system.sp.value}}" min="0" max="{{system.sp.max}}" {{#unless editable}}disabled{{/unless}} />
+          <span class="sdp-separator">/</span>
+          <input type="number" name="system.sp.max" value="{{system.sp.max}}" min="0" {{#unless editable}}disabled{{/unless}} />
+        </div>
+      </div>
+      <div class="stat-field actor-stats-title text-semi">
+        <label>{{localize "CPRVEHICLES.Fields.Seats"}}</label>
+        <input type="number" name="system.seats" value="{{system.seats}}" min="0" {{#unless editable}}disabled{{/unless}} />
+      </div>
+      <div class="stat-field actor-stats-title text-semi">
+        <label>{{localize "CPRVEHICLES.Fields.SpeedCombat"}}</label>
+        <input type="number" name="system.speedCombat" value="{{system.speedCombat}}" min="0" {{#unless editable}}disabled{{/unless}} />
+      </div>
+      <div class="stat-field actor-stats-title text-semi">
+        <label>{{localize "CPRVEHICLES.Fields.SpeedNarrative"}}</label>
+        <input type="text" name="system.speedNarrative" value="{{system.speedNarrative}}" {{#unless editable}}disabled{{/unless}} />
+      </div>
+    </section>
+  
+    <section class="vehicle-items">
+      <div class="items-header">
+        <h3>{{localize "CPRVEHICLES.Fields.MountedWeapons"}}</h3>
+      </div>
+      {{#if hasMountedWeapons}}
+        <div class="weapon-content">
+          {{#each mountedWeapons}}
+            <div class="item weapon-grid" data-item-id="{{id}}">
+              <div class="weapon-image">
+                <img alt="{{name}}" src="{{img}}"/>
+              </div>
+  
+              <div class="weapon-name">
+                <a class="name item-edit" data-item-id="{{id}}">{{name}}</a>
+              </div>
+  
+              <div class="weapon-ammo">
+                {{ammoLabel}}
+              </div>
+  
+              <div class="weapon-info">
+                <span class="text-pill">{{localize "CPR.itemSheet.weapon.rof"}} {{rof}}</span>
+                <span class="text-pill">{{localize "CPR.global.generic.damage"}} {{damage}}</span>
+              </div>
+  
+              <div class="weapon-mode text-padding-sides-small">
+                <ul>
+                  <li>
+                    <span class="text-padding-sides-small">{{localize "CPR.actorSheets.fireModes.aim"}}</span>
+                    <a class="fire-checkbox vehicle-weapon-fire" data-fire-mode="aimed" data-item-id="{{id}}">
+                      {{#if fireModeAimed}}
+                        <i class="far fa-circle-dot text-padding-right-smallest"></i>
+                      {{else}}
+                        <i class="far fa-circle text-padding-right-smallest"></i>
+                      {{/if}}
+                    </a>
+                  </li>
+                  {{#if supportsAutofire}}
+                    <li>
+                      <span class="text-padding-right-small">{{localize "CPR.actorSheets.fireModes.autoFire"}} ({{autofireMax}})</span>
+                      <a class="fire-checkbox vehicle-weapon-fire" data-fire-mode="autofire" data-item-id="{{id}}">
+                        {{#if fireModeAutofire}}
+                          <i class="far fa-circle-dot text-padding-right-smallest"></i>
+                        {{else}}
+                          <i class="far fa-circle text-padding-right-smallest"></i>
+                        {{/if}}
+                      </a>
+                    </li>
+                  {{/if}}
+                  {{#if supportsSuppressive}}
+                    <li>
+                      <span class="text-padding-right-small">{{localize "CPR.actorSheets.fireModes.suppressiveFireShort"}}</span>
+                      <a class="fire-checkbox vehicle-weapon-fire" data-fire-mode="suppressive" data-item-id="{{id}}">
+                        {{#if fireModeSuppressive}}
+                          <i class="far fa-circle-dot text-padding-right-smallest"></i>
+                        {{else}}
+                          <i class="far fa-circle text-padding-right-smallest"></i>
+                        {{/if}}
+                      </a>
+                    </li>
+                  {{/if}}
+                </ul>
+              </div>
+  
+              <div class="weapon-actions">
+                {{#if isRanged}}
+                  <ul class="items-list">
+                    <li class="text-padding-sides-smaller">
+                      <a class="item-action vehicle-weapon-action" data-action-type="change-ammo" data-item-id="{{id}}">
+                        <i class="fas fa-arrow-right-arrow-left" data-tooltip="{{localize 'CPR.actorSheets.commonActions.changeAmmo'}}"></i>
+                      </a>
+                    </li>
+                    <li class="text-padding-sides-smaller">
+                      <a class="item-action vehicle-weapon-action" data-action-type="reload" data-item-id="{{id}}">
+                        <i class="fas fa-rotate-right" data-tooltip="{{localize 'CPR.actorSheets.commonActions.reload'}}"></i>
+                      </a>
+                    </li>
+                  </ul>
+                {{/if}}
+                <a class="vehicle-weapon-uninstall" title="{{localize 'CPRVEHICLES.Actions.UnmountWeapon'}}">
+                  <i class="fas fa-eject"></i>
+                </a>
+              </div>
+  
+              <div class="weapon-attack text-largest">
+                <a class="rollable vehicle-weapon-roll" data-roll-type="attack" data-item-id="{{id}}">
+                  <i class="fas fa-hand-fist red-fg" data-tooltip="{{localize 'CPR.characterSheet.bottomPane.fight.rollAnAttack'}}"></i>
+                </a>
+              </div>
+  
+              <div class="weapon-damage text-largest">
+                {{#if canRollDamage}}
+                  <a class="rollable vehicle-weapon-roll" data-roll-type="damage" data-item-id="{{id}}">
+                    <i class="fas fa-droplet red-fg" data-tooltip="{{localize 'CPR.actorSheets.commonActions.rollDamage'}}"></i>
                   </a>
                 {{/if}}
-                <a class="item-edit" title="Edit"><i class="fas fa-edit"></i></a>
-                <a class="item-delete" title="Delete"><i class="fas fa-trash"></i></a>
-              {{/if}}
+              </div>
             </div>
           {{/each}}
         </div>
-      {{/each}}
-    {{/if}}
-    {{#unless hasStoredItems}}
-      <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
-    {{/unless}}
-  </section>
-
-  <section class="vehicle-notes">
-    <h3>{{localize "CPRVEHICLES.Fields.Notes"}}</h3>
-    {{editor enrichedNotes target="system.notes" button=true owner=owner editable=editable engine="prosemirror"}}
-  </section>
+      {{else}}
+        <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
+      {{/if}}
+    </section>
+  
+    <section class="vehicle-items">
+      <div class="items-header">
+        <h3>{{localize "CPRVEHICLES.Fields.InstalledUpgrades"}}</h3>
+      </div>
+      {{#if hasInstalledVehicleUpgrades}}
+        {{#each installedVehicleUpgrades}}
+          <div class="item-row" data-item-id="{{this.id}}">
+            <img class="item-img" src="{{this.img}}" width="24" height="24" />
+            <span class="item-name">{{this.name}}</span>
+            {{#if @root.editable}}
+              <a class="item-toggle-install" data-install="false" title="{{localize 'CPRVEHICLES.Actions.UninstallUpgrade'}}">
+                <i class="fas fa-eject"></i>
+              </a>
+              <a class="item-edit" title="Edit"><i class="fas fa-edit"></i></a>
+              <a class="item-delete" title="Delete"><i class="fas fa-trash"></i></a>
+            {{/if}}
+          </div>
+        {{/each}}
+      {{else}}
+        <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
+      {{/if}}
+    </section>
+  
+    <section class="vehicle-items">
+      <div class="items-header">
+        <h3>{{localize "CPRVEHICLES.Fields.Trunk"}}</h3>
+      </div>
+      {{#if hasStoredItems}}
+        {{#each storedItemsByType as |items type|}}
+          <div class="item-type-group">
+            <h4 class="item-type-label">{{lookup @root.typeLabels type}}</h4>
+            {{#each items}}
+              <div class="item-row" draggable="true" data-item-category="{{this.type}}" data-item-id="{{this.id}}">
+                <img class="item-img" src="{{this.img}}" width="24" height="24" />
+                <span class="item-name">{{this.name}}</span>
+                <input
+                  class="trunk-item-amount"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="{{this.amount}}"
+                  {{#unless this.canEditAmount}}readonly{{/unless}}
+                  {{#unless @root.editable}}disabled{{/unless}}
+                />
+                {{#if @root.editable}}
+                  {{#if this.canToggleInstall}}
+                    <a class="item-toggle-install" data-install="true" title="{{localize 'CPRVEHICLES.Actions.InstallUpgrade'}}">
+                      <i class="fas fa-plug"></i>
+                    </a>
+                  {{else if (eq this.type "weapon")}}
+                    <a class="vehicle-weapon-install" title="{{localize 'CPRVEHICLES.Actions.InstallWeapon'}}">
+                      <i class="fas fa-plug"></i>
+                    </a>
+                  {{/if}}
+                  <a class="item-edit" title="Edit"><i class="fas fa-edit"></i></a>
+                  <a class="item-delete" title="Delete"><i class="fas fa-trash"></i></a>
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        {{/each}}
+      {{/if}}
+      {{#unless hasStoredItems}}
+        <p class="items-empty">{{localize "CPRVEHICLES.Fields.ItemsEmpty"}}</p>
+      {{/unless}}
+    </section>
+  
+    <section class="vehicle-notes">
+      <h3>{{localize "CPRVEHICLES.Fields.Notes"}}</h3>
+      {{editor enrichedNotes target="system.notes" button=true owner=owner editable=editable engine="prosemirror"}}
+    </section>
+  </div>
 </form>

@@ -1,4 +1,5 @@
 import { hasVehicleBaseStatField } from "./vehicle-upgrade-stats.mjs";
+import SystemUtils from "../../../systems/cyberpunk-red-core/modules/utils/cpr-systemUtils.js";
 
 export default class CPRVehicleSheet extends ActorSheet {
   static MODULE_ID = "cyberpunk-red-vehicles";
@@ -190,6 +191,13 @@ export default class CPRVehicleSheet extends ActorSheet {
       await item.update({ "system.amount": amount });
       input.value = amount;
     });
+
+    // Item Dragging
+    const handler = (ev) => this._onDragItemStart(ev);
+    html.find(".item-row").each((i, li) => {
+      li.setAttribute("draggable", true);
+      li.addEventListener("dragstart", handler, false);
+    });
   }
 
   _notifyVehicleWeaponResult(result) {
@@ -213,7 +221,34 @@ export default class CPRVehicleSheet extends ActorSheet {
     ui.notifications.warn(game.i18n.localize(key));
   }
 
+  _onDragItemStart(event) {
+    const itemId = SystemUtils.GetEventDatum(event, "data-item-id");
+    const item = this.actor.getEmbeddedDocument("Item", itemId);
+    const tokenId = this.token === null ? null : this.token.id;
+    event.dataTransfer.setData(
+      "text/plain",
+      JSON.stringify({
+        type: "Item",
+        uuid: item.uuid,
+        system: {
+          actorId: this.actor._id,
+          tokenId,
+          data: item,
+          root: SystemUtils.GetEventDatum(event, "root"),
+        },
+      })
+    );
+  }
+
+  async _onDrop(event) {
+    const dragData = TextEditor.getDragEventData(event);
+    return dragData.type === "Item"
+      ? this._cprOnItemDrop(event)
+      : super._onDrop(event);
+  }
+
   async _onDropItem(event, data) {
+    const dragData = TextEditor.getDragEventData(event);
     const item = await Item.implementation.fromDropData(data);
     if (item.type === "itemUpgrade" && item.system.type !== "vehicle") {
       ui.notifications.warn(game.i18n.localize("CPRVEHICLES.Notifications.OnlyVehicleUpgrades"));
@@ -221,6 +256,90 @@ export default class CPRVehicleSheet extends ActorSheet {
     }
     return super._onDropItem(event, data);
   }
+
+  async _cprOnItemDrop(event) {
+    const dragData = TextEditor.getDragEventData(event);
+    let sourceActor;
+    const sourceItem = fromUuidSync(dragData.uuid);
+    if (sourceItem.type === "cyberware" && sourceItem.system?.isInstalled) {
+      SystemUtils.DisplayMessage(
+        "error",
+        SystemUtils.Localize("CPR.messages.tradeDragInstalledCyberwareError")
+      );
+      return;
+    }
+    const transferItem =
+      dragData.system && dragData.system.actorId !== undefined;
+    if (transferItem) {
+      // Transfer ownership from one player to another
+      sourceActor = Object.keys(game.actors.tokens).includes(
+        dragData.system.tokenId
+      )
+        ? game.actors.tokens[dragData.system.tokenId]
+        : game.actors.find((a) => a.id === dragData.system.actorId);
+      if (sourceActor.type === "container" && !game.user.isGM) {
+        SystemUtils.DisplayMessage(
+          "warn",
+          SystemUtils.Localize("CPR.messages.tradeDragOutWarn")
+        );
+        return;
+      }
+      if (sourceActor) {
+        // Do not move if the data is moved to itself
+        if (sourceActor._id === this.actor._id) {
+          return;
+        }
+
+        // If the cyberware is marked as core, or is installed, throw an error message.
+        if (
+          sourceItem.system.core === true ||
+          (sourceItem.system.type === "cyberware" &&
+            sourceItem.system.isInstalled)
+        ) {
+          SystemUtils.DisplayMessage(
+            "error",
+            SystemUtils.Localize("CPR.messages.cannotDropInstalledCyberware")
+          );
+          return;
+        }
+      }
+    }
+
+    const deleteList = transferItem ? [sourceItem._id] : [];
+    const containerTypes = SystemUtils.getDocTypesFromMixin("container");
+
+    const [newItem] = await super._onDrop(event);
+
+    // If we created a new item and the sourceItem is a container type the createItem hook ensures all of the
+    // installed items are also created on the target actor. We need to ensure that those items are
+    // deleted from the source actor.
+    if (
+      newItem &&
+      containerTypes.includes(sourceItem.type) &&
+      sourceItem.isOwned &&
+      sourceItem.system.hasInstalled
+    ) {
+      const deleteItemList = sourceItem.recursiveGetAllInstalledItems();
+      for (const item of deleteItemList) {
+        // Delete non-ammo items.
+        if (item.type !== "ammo") deleteList.push(item._id);
+        // Only delete ammo items if they have a non-zero stack size.
+        if (item.type === "ammo" && item.system.amount === 0)
+          deleteList.push(item._id);
+      }
+    }
+
+    if (newItem && transferItem) {
+      await sourceActor.deleteEmbeddedDocuments("Item", deleteList, {
+        // Don't unload the ammo when we are transferring weapons. Leave ammo stack as-is.
+        unloadAmmo: false,
+        // Delete nested installed items.
+        deleteInstalled: true,
+      });
+    }
+  }
+
+
 
   async _configureFromItem() {
     const vehicleItems = game.items.filter((i) => i.type === "vehicle");
