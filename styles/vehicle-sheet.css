@@ -1,5 +1,10 @@
+.cyberpunk-red-vehicles.vehicle-sheet .vehicle-content {
+  color: var(--cpr-text-normal);
+  background-color: var(--cpr-background-border) !important;
+  padding: 0.313rem;
+}
+
 .cyberpunk-red-vehicles.vehicle-sheet .window-content {
-  background-color: var(--cpr-background-window, #eaeaea);
   padding: 0.5rem;
 }
 
@@ -7,15 +12,14 @@
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-header {
   display: grid;
   grid-template-columns: 96px 1fr;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  gap: 0.313rem;
+  margin-bottom: 0.313rem;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-image {
   width: 96px;
   height: 96px;
   object-fit: cover;
-  border: 2px solid var(--cpr-background-border, #b90202);
   clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);
   cursor: pointer;
 }
@@ -23,24 +27,30 @@
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-header-fields {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.313rem;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-name {
   font-family: var(--cpr-font-hero, "Rubik", sans-serif);
-  font-size: var(--cpr-font-large, 1.5rem);
+  font-size: var(--cpr-font-large, 2rem);
   font-weight: bold;
-  border: none;
-  border-bottom: 2px solid var(--cpr-background-border, #b90202);
-  background: transparent;
+  text-align: center;
+  background-color: var(--cpr-background-box);
   color: var(--cpr-text-normal, #222);
+  height: 100%;
   width: 100%;
+  padding: 0.125rem;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-type-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  padding: 0.125rem;
+  gap: 0.313rem;
+  background-color: var(--cpr-background-box);
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-type-row label {
@@ -51,7 +61,6 @@
 
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-type-row select {
   background-color: var(--cpr-background-box, #eaeaea);
-  border: 1px solid var(--cpr-background-border, #b90202);
   color: var(--cpr-text-normal, #222);
   font-family: var(--cpr-font-primary, "Jost", sans-serif);
 }
@@ -60,29 +69,27 @@
   align-self: flex-start;
   background-color: var(--cpr-background-header, #0d0b0c);
   color: var(--cpr-color-white, #eaeaea);
-  border: 1px solid var(--cpr-background-border, #b90202);
   cursor: pointer;
   padding: 0.15rem 0.5rem;
   font-size: var(--cpr-font-small, 0.9rem);
   font-family: var(--cpr-font-primary, "Jost", sans-serif);
+  box-shadow: none;
+  border: none;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .configure-from-item:hover {
-  background-color: var(--cpr-background-foundry-hover, #b90202);
+  background-color: var(--cpr-background-box);
 }
 
 /* SDP Bar */
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-sdp {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   padding: 0.4rem 0;
-  border-top: 2px solid var(--cpr-background-border, #b90202);
-  border-bottom: 2px solid var(--cpr-background-border, #b90202);
-  margin-bottom: 0.5rem;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-sdp > label {
+  font-family: var(--cpr-font-primary);
   font-weight: bold;
   font-size: var(--cpr-font-normal, 1rem);
   white-space: nowrap;
@@ -90,15 +97,16 @@
 
 .cyberpunk-red-vehicles.vehicle-sheet .sdp-bar-track {
   flex: 1;
-  height: 1rem;
-  background-color: var(--cpr-color-dark-grey, #444);
-  border-radius: 2px;
+  height: 1.31em;
+  background-color: var(--cpr-background-box, #eaeaea);
+  clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 100%, 1rem 100%);
   overflow: hidden;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .sdp-bar-fill {
   height: 100%;
-  background-color: var(--cpr-color-red, #b90202);
+  background-color: var(--cpr-background-header, #0d0b0c);
+  clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 100%, 1rem 100%);
   transition: width 0.3s ease;
 }
 
@@ -113,7 +121,7 @@
   width: 2.5rem;
   text-align: center;
   background-color: var(--cpr-background-box, #eaeaea);
-  border: 1px solid var(--cpr-color-medium-grey, #666);
+  border: none;
   color: var(--cpr-text-normal, #222);
   font-family: var(--cpr-font-primary, "Jost", sans-serif);
 }
@@ -124,9 +132,10 @@
 
 /* Stats Row */
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-stats {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
+  display: grid;
+  gap: 0.313rem;
+  grid-auto-flow: column;
+  padding: 0.15rem;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .stat-field {
@@ -134,16 +143,19 @@
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  align-items: center;
+  background-color: var(--cpr-background-box, #eaeaea);
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .stat-field label {
   font-weight: bold;
   font-size: var(--cpr-font-small, 0.9rem);
+  text-align: center;
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .stat-field input {
   background-color: var(--cpr-background-box, #eaeaea);
-  border: 1px solid var(--cpr-color-medium-grey, #666);
+  border: none;
   color: var(--cpr-text-normal, #222);
   font-family: var(--cpr-font-primary, "Jost", sans-serif);
   text-align: center;
@@ -178,16 +190,15 @@
 
 /* Items Section */
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-items {
-  border-top: 2px solid var(--cpr-background-border, #b90202);
-  margin-bottom: 0.5rem;
+  background-color: var(--cpr-background-box, #eaeaea);
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .items-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--cpr-background-header, #0d0b0c);
-  color: var(--cpr-text-header, #eaeaea);
+  background-color: var(--cpr-background-tab-active, #b90202);
+  color: var(--cpr-text-tab-normal, #eaeaea);
   padding: 0.15rem 0.5rem;
 }
 
@@ -201,7 +212,8 @@
   font-size: var(--cpr-font-small, 0.9rem);
   text-transform: capitalize;
   padding: 0.1rem 0.5rem;
-  background-color: var(--cpr-background-cyberdeck-section-header, #ffc3b6);
+  background-color: var(--cpr-background-header, #0d0b0c);
+  color: var(--cpr-text-header, #eaeaea);
   margin: 0;
   border: none;
 }
@@ -266,7 +278,7 @@
 
 /* Notes Section */
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-notes {
-  border-top: 2px solid var(--cpr-background-border, #b90202);
+  background-color: var(--cpr-background-box, #eaeaea);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -274,8 +286,8 @@
 }
 
 .cyberpunk-red-vehicles.vehicle-sheet .vehicle-notes h3 {
-  background-color: var(--cpr-background-header, #0d0b0c);
-  color: var(--cpr-text-header, #eaeaea);
+  background-color: var(--cpr-background-tab-active, #b90202);
+  color: var(--cpr-text-tab-normal, #eaeaea);
   padding: 0.15rem 0.5rem;
   margin: 0;
   font-size: var(--cpr-font-normal, 1rem);
